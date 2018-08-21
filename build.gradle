@@ -1,0 +1,80 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven {
+			name = "sonatype"
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
+		}
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+		maven {
+			name = "sponge"
+			url = "http://repo.spongepowered.org/maven"
+		}
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:$project.forgeGradleVersion"
+		classpath "org.spongepowered:mixingradle:$project.mixinGradleVersion"
+	}
+}
+
+apply plugin: "net.minecraftforge.gradle.liteloader"
+apply plugin: "org.spongepowered.mixin"
+
+version = project.version
+group = project.group
+archivesBaseName = "$project.name-$project.mcVersion"
+
+minecraft {
+	// these values are defined in the gradle.properties file, so that this file does not need to be altered
+	version = project.mcVersion
+	mappings = project.mcMappings
+	runDir = "run"
+	makeObfSourceJar = false
+
+	replace "@VERSION@", project.version
+	replace "@NAME@", project.name
+}
+
+sourceSets {
+	main {
+		// Refmap declaration must match the refmap name specified in the json config
+		ext.refMap = "mixins.uselessmod.refmap.json"
+	}
+}
+
+dependencies {
+	// For Mixin auditing.
+	compile "org.jetbrains.java.decompiler:fernflower:sponge-SNAPSHOT"
+}
+
+mixin {
+	// liteloader does not do runtime deobfuscation, so in production we use "notch names", mixin needs to know this
+	defaultObfuscationEnv notch
+}
+
+libsDirName = "../libs"
+
+litemod {
+	json {
+		author = "nessie"
+		name = project.name
+		mcversion = project.mcVersion
+		description = "A very UselessMod."
+		mixinConfigs += "mixins.uselessmod.json"
+
+	}
+}
+
+jar {
+	classifier = ""
+	baseName = archivesBaseName
+	from litemod.outputs
+}
+
+runClient {
+	jvmArgs "-Dmixin.debug=true"
+}
