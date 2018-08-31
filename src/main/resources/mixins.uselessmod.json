@@ -1,0 +1,17 @@
+{
+	"package": "nessiesson.uselessmod.mixins",
+	"refmap": "mixins.uselessmod.refmap.json",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"MixinBlock",
+		"MixinCommandBase",
+		"MixinEntityItem",
+		"MixinEntityPlayerSP",
+		"MixinGuiBossOverlay",
+		"MixinGuiOverlayDebug",
+		"MixinMinecraft",
+		"MixinParticleManager",
+		"MixinPlayerControllerMP",
+		"MixinTeleportToPlayer"
+	]
+}

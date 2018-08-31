@@ -1,0 +1,113 @@
+buildscript {
+	repositories {
+		jcenter()
+		maven { url = "https://files.minecraftforge.net/maven" }
+		maven { url = "http://repo.spongepowered.org/maven" }
+		maven { url = "https://plugins.gradle.org/m2" }
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
+		classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
+	}
+}
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "org.spongepowered.mixin"
+apply plugin: "com.github.johnrengelman.shadow"
+
+sourceCompatibility = targetCompatibility = 1.8
+
+version = project.modVersion
+group = project.modGroup
+archivesBaseName = project.modName
+
+
+repositories {
+	mavenCentral()
+	maven { url = "http://repo.spongepowered.org/maven" }
+}
+
+dependencies {
+	compile("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+		exclude module: "asm-commons"
+		exclude module: "asm-tree"
+		exclude module: "launchwrapper"
+		exclude module: "guava"
+		exclude module: "log4j-core"
+		exclude module: "gson"
+		exclude module: "commons-io"
+	}
+
+	compile "org.jetbrains.java.decompiler:fernflower:sponge-SNAPSHOT"
+}
+
+
+minecraft {
+	version = project.forgeVersion
+	mappings = project.mcpVersion
+	runDir = "run"
+
+	makeObfSourceJar = false
+
+	def args = [
+			"-Dfml.coreMods.load=nessiesson.uselessmod.UselessModMixinLoadingPlugin",
+			"-Dmixin.hotSwap=true",
+			"-Dmixin.debug=true",
+	]
+	clientJvmArgs.addAll(args)
+	serverJvmArgs.addAll(args)
+}
+
+processResources {
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.modVersion
+	inputs.property "mcversion", project.minecraft.version
+
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include "mcmod.info"
+		expand "modid": project.modId, "name": project.name, "version": project.version, "mcversion": project.minecraft.version
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "mcmod.info"
+	}
+}
+
+mixin {
+	add sourceSets.main, "mixins.uselessmod.refmap.json"
+}
+
+shadowJar {
+	exclude "dummyThing"
+	exclude "LICENSE.txt"
+
+	dependencies {
+		include(dependency("org.spongepowered:mixin"))
+	}
+
+	classifier ""
+}
+
+build.dependsOn(shadowJar)
+
+reobf {
+	shadowJar {
+		mappingType = "SEARGE"
+		classpath = sourceSets.main.compileClasspath
+	}
+}
+
+jar {
+	manifest {
+		attributes(
+				"MixinConfigs": "mixins.uselessmod.json",
+				"ForceLoadAsMod": true,
+				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+				"FMLCorePlugin": "nessiesson.uselessmod.UselessModMixinLoadingPlugin",
+				"FMLCorePluginContainsFMLMod": "nessiesson.uselessmod.UselessMod",
+				"FMLAT": "uselessmod_at.cfg"
+		)
+	}
+}
