@@ -1,6 +1,7 @@
 {
 	"package": "nessiesson.uselessmod.mixins",
 	"refmap": "mixins.uselessmod.refmap.json",
+	"minVersion": "0.7.5",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
 		"MixinBlock",
