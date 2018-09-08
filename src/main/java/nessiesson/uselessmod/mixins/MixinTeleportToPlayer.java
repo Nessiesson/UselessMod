@@ -18,7 +18,6 @@ import java.util.List;
 
 @Mixin(TeleportToPlayer.class)
 public abstract class MixinTeleportToPlayer implements ISpectatorMenuView, ISpectatorMenuObject {
-
 	@Shadow
 	@Final
 	private static Ordering<NetworkPlayerInfo> PROFILE_ORDER;

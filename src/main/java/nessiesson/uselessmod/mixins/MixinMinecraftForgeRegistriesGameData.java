@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // Mixin-implementation of https://github.com/MinecraftForge/MinecraftForge/commit/52702e5cc9c629b3b2baff6a726aabb168aced16
 @Mixin(targets = "net/minecraftforge/registries/GameData$BlockCallbacks")
 public abstract class MixinMinecraftForgeRegistriesGameData {
-
 	private Block mixinBlock;
 
 	@Inject(method = "onAdd", at = @At("HEAD"))
