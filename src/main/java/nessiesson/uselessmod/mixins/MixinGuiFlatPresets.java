@@ -21,7 +21,7 @@ public abstract class MixinGuiFlatPresets {
 	private static void registerPreset(String name, Item icon, Biome biome, List<String> features, FlatLayerInfo... layers) {
 	}
 
-	@Inject(method = "<clinit>", at = @At(value = "INVOKE", ordinal = 0, shift = At.Shift.BEFORE, target = "Lnet/minecraft/client/gui/GuiFlatPresets;registerPreset(Ljava/lang/String;Lnet/minecraft/item/Item;Lnet/minecraft/world/biome/Biome;Ljava/util/List;[Lnet/minecraft/world/gen/FlatLayerInfo;)V"))
+	@Inject(method = "<clinit>", at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/gui/GuiFlatPresets;registerPreset(Ljava/lang/String;Lnet/minecraft/item/Item;Lnet/minecraft/world/biome/Biome;Ljava/util/List;[Lnet/minecraft/world/gen/FlatLayerInfo;)V"))
 	private static void addSciCraftFlatPreset(CallbackInfo ci) {
 		MixinGuiFlatPresets.registerPreset("SciCraft flatworld", Item.getItemFromBlock(Blocks.STAINED_GLASS), Biomes.FOREST, Arrays.asList(""), new FlatLayerInfo(1, Blocks.STAINED_GLASS));
 	}
