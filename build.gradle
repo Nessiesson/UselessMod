@@ -19,7 +19,6 @@ apply plugin: "com.github.johnrengelman.shadow"
 sourceCompatibility = targetCompatibility = 1.8
 
 version = project.modVersion
-group = project.modGroup
 archivesBaseName = project.modName
 
 
@@ -73,10 +72,6 @@ processResources {
 	from(sourceSets.main.resources.srcDirs) {
 		exclude "mcmod.info"
 	}
-}
-
-mixin {
-	add sourceSets.main, "mixins.uselessmod.refmap.json"
 }
 
 shadowJar {
