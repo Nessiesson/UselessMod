@@ -23,9 +23,6 @@ public abstract class MixinPlayerControllerMP {
 					+ "onPlayerDestroyBlock(Lnet/minecraft/util/math/BlockPos;)Z"),
 			locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void onInstantMine(BlockPos loc, EnumFacing face, CallbackInfoReturnable<Boolean> cir, PlayerInteractEvent.LeftClickBlock event, IBlockState iblockstate, boolean flag) {
-		/*if (!LiteModUselessMod.config.isMiningGhostblockFixEnabled) {
-			return;
-		}*/
 
 		Minecraft mc = Minecraft.getMinecraft();
 		if (iblockstate.getBlockHardness(mc.world, loc) > 0.0f) {

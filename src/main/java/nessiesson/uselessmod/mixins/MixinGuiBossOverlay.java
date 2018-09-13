@@ -22,7 +22,6 @@ public abstract class MixinGuiBossOverlay {
 	@Redirect(method = "renderBossHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/BossInfoClient;getName()Lnet/minecraft/util/text/ITextComponent;"))
 	private ITextComponent hotterStream(BossInfoClient bossInfoClient) {
 		int i = Math.abs(bossInfoClient.getUniqueId().hashCode());
-		System.out.println(i);
 		return new TextComponentString(op[i % op.length]);
 	}
 }

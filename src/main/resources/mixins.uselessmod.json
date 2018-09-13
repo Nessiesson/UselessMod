@@ -9,11 +9,9 @@
 		"MixinEntityLivingBase",
 		"MixinEntityPlayerSP",
 		"MixinGuiBossOverlay",
-		"MixinGuiFlatPresets",
 		"MixinGuiOverlayDebug",
 		"MixinMinecraft",
 		"MixinMinecraftForgeRegistriesGameData",
-		"MixinParticleManager",
 		"MixinPlayerControllerMP",
 		"MixinTeleportToPlayer"
 	]

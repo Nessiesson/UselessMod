@@ -20,12 +20,4 @@ public abstract class MixinEntityItem extends Entity {
 	private boolean clientPushOutOfBlocks(World world) {
 		return !Minecraft.getMinecraft().isSingleplayer();
 	}
-
-	@Override
-	public boolean isInRangeToRenderDist(double distance) {
-		//if(LiteModUselessMod.config.smallerItemRenderRange) {
-		distance *= 6.0D;
-		//}
-		return super.isInRangeToRenderDist(distance);
-	}
 }
