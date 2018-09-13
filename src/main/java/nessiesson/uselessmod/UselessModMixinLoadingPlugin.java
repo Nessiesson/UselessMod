@@ -14,7 +14,6 @@ import java.util.Map;
 public class UselessModMixinLoadingPlugin implements IFMLLoadingPlugin {
 	public UselessModMixinLoadingPlugin() {
 		MixinBootstrap.init();
-
 		Mixins.addConfiguration("mixins.uselessmod.json");
 	}
 
