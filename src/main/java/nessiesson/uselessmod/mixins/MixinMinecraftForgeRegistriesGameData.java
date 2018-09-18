@@ -17,12 +17,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinMinecraftForgeRegistriesGameData {
 	private Block mixinBlock;
 
-	@Inject(method = "onAdd", at = @At("HEAD"))
+	@Inject(method = "onAdd", at = @At("HEAD"), remap = false)
 	private void setMixinBlock(IForgeRegistryInternal<Block> owner, RegistryManager stage, int id, Block block, Block oldBlock, CallbackInfo ci) {
 		this.mixinBlock = block;
 	}
 
-	@Redirect(method = "onAdd", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/registries/GameData$ClearableObjectIntIdentityMap;put(Ljava/lang/Object;I)V", ordinal = 2))
+	@Redirect(method = "onAdd", at = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraftforge/registries/GameData$ClearableObjectIntIdentityMap;put(Ljava/lang/Object;I)V"), remap = false)
 	private void poop(@Coerce ObjectIntIdentityMap<Object> map, Object key, int value) {
 		if (this.mixinBlock.getClass() != BlockObserver.class) {
 			map.put(key, value);

@@ -8,6 +8,8 @@
 		"MixinEntityItem",
 		"MixinEntityLivingBase",
 		"MixinEntityPlayerSP",
+		"MixinGameSettings",
+		"MixinGameSettings$Options",
 		"MixinGuiBossOverlay",
 		"MixinGuiOverlayDebug",
 		"MixinMinecraft",

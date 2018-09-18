@@ -15,7 +15,7 @@ public abstract class MixinWorldClient {
 		return 0;
 	}
 
-	@Redirect(method = "playMoodSoundAndCheckLight", at = @At(value = "INVOKE", ordinal = 0, target = "Ljava/util/Random;nextInt(I)I"))
+	@Redirect(method = "playMoodSoundAndCheckLight", at = @At(value = "INVOKE", ordinal = 0, target = "Ljava/util/Random;nextInt(I)I", remap = false))
 	private int useConstantLightLevel(Random random, int bound) {
 		return 8;
 	}
