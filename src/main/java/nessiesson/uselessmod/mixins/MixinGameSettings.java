@@ -24,12 +24,12 @@ public abstract class MixinGameSettings {
 		}
 		ci.cancel();
 
-		if (value >= 105.0F) {
+		if (value >= 0.95F) {
 			value = 1000.0F;
-		} else if (value >= 100.0F) {
+		} else if (value >= 0.9F) {
 			value = 1.0F;
 		} else {
-			value = Math.min(1.0F, value * 1.1F / 100.0F);
+			value = Math.min(1.0F, value / 0.9F);
 		}
 		this.gammaSetting = value;
 	}
@@ -46,7 +46,7 @@ public abstract class MixinGameSettings {
 
 		if (f > 1.0F) {
 			s += "GammaBright";
-		} else if (f == 1.0F) {
+		} else if (f > 0.95F) {
 			s += I18n.format("options.gamma.max");
 		} else if (f > 0.0F) {
 			s += "+" + (int) (f * 100.0F) + "%";

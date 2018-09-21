@@ -9,13 +9,13 @@
 		"MixinEntityLivingBase",
 		"MixinEntityPlayerSP",
 		"MixinGameSettings",
-		"MixinGameSettings$Options",
 		"MixinGuiBossOverlay",
-		"MixinGuiOptionSlider",
 		"MixinGuiOverlayDebug",
 		"MixinMinecraft",
 		"MixinMinecraftForgeRegistriesGameData",
+		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
+		"MixinRenderGlobal",
 		"MixinTeleportToPlayer",
 		"MixinWorldClient"
 	]
