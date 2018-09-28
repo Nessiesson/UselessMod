@@ -1,19 +1,21 @@
 {
 	"required": true,
 	"package": "nessiesson.uselessmod.mixins",
-	"refmap": "mixins.uselessmod.refmap.json",
 	"mixins": [
 		"ISoundHandler",
 		"MixinBlock",
 		"MixinCommandBase",
 		"MixinEntityItem",
 		"MixinEntityPlayerSP",
+		"MixinGameSettings",
 		"MixinGuiBossOverlay",
 		"MixinGuiOverlayDebug",
 		"MixinKeyBinding",
 		"MixinMinecraft",
-		"MixinParticleManager",
+		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
-		"MixinTeleportToPlayer"
+		"MixinRenderGlobal",
+		"MixinTeleportToPlayer",
+		"MixinWorldClient"
 	]
 }

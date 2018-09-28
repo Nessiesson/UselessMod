@@ -39,13 +39,6 @@ minecraft {
 	replace "@NAME@", project.name
 }
 
-sourceSets {
-	main {
-		// Refmap declaration must match the refmap name specified in the json config
-		ext.refMap = "mixins.uselessmod.refmap.json"
-	}
-}
-
 dependencies {
 	// For Mixin auditing.
 	compile "org.jetbrains.java.decompiler:fernflower:sponge-SNAPSHOT"
@@ -55,8 +48,6 @@ mixin {
 	// liteloader does not do runtime deobfuscation, so in production we use "notch names", mixin needs to know this
 	defaultObfuscationEnv notch
 }
-
-libsDirName = "../libs"
 
 litemod {
 	json {

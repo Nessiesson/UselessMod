@@ -10,8 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements IThreadListener, ISnooperInfo {
-	// Disable the goddamn narrator shortcut.
-	// If you for some reason need narrator, enable it in Options -> Chat Settings -> Narrator.
 	@Redirect(method = "dispatchKeypresses", at = @At(value = "INVOKE",
 			target = "Lnet/minecraft/client/settings/GameSettings;setOptionValue(Lnet/minecraft/client/settings/GameSettings$Options;I)V"))
 	private void onSetOptionValue(GameSettings gameSettings, GameSettings.Options settingsOption, int value) {

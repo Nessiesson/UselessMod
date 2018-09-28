@@ -18,15 +18,14 @@ import java.util.List;
 
 @Mixin(TeleportToPlayer.class)
 public abstract class MixinTeleportToPlayer implements ISpectatorMenuView, ISpectatorMenuObject {
-
 	@Shadow
 	@Final
 	private static Ordering<NetworkPlayerInfo> PROFILE_ORDER;
+
 	@Shadow
 	@Final
 	private List<ISpectatorMenuObject> items;
 
-	//Hackfix to allow spectated players to teleport to other specators.
 	@Inject(method = "<init>(Ljava/util/Collection;)V", at = @At(value = "RETURN"))
 	private void onConstructSpectatorList(Collection<NetworkPlayerInfo> profiles, CallbackInfo ci) {
 		this.items.clear();
