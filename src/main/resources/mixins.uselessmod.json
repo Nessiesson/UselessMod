@@ -12,6 +12,7 @@
 		"MixinGuiOverlayDebug",
 		"MixinKeyBinding",
 		"MixinMinecraft",
+		"MixinMusicTicker",
 		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
 		"MixinRenderGlobal",
