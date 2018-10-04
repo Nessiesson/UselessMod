@@ -12,10 +12,8 @@ public abstract class MixinMusicTicker {
 	@Shadow
 	private int timeUntilNextMusic;
 
-	@Inject(method = "update", at = @At(value = "INVOKE", ordinal = 1, shift = At.Shift.AFTER, target = "Ljava/lang/Math;min(II)I", remap = false))
-	private void continuousMusic(CallbackInfo ci) {
-		if (this.timeUntilNextMusic > 100) {
-			this.timeUntilNextMusic = 100;
-		}
+	@Inject(method = "playMusic", at = @At("RETURN"))
+	private void continuousMusic(MusicTicker.MusicType requestedMusicType, CallbackInfo ci) {
+		this.timeUntilNextMusic = 100;
 	}
 }
