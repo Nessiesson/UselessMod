@@ -6,7 +6,6 @@
 		"MixinBlock",
 		"MixinCommandBase",
 		"MixinEntityItem",
-		"MixinEntityLivingBase",
 		"MixinEntityPlayerSP",
 		"MixinGameSettings",
 		"MixinGuiBossOverlay",
