@@ -17,14 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(PlayerControllerMP.class)
 public abstract class MixinPlayerControllerMP {
-	// Client-side fix for instant mining ghost blocks.
 	@Inject(method = "clickBlock", at = @At(value = "INVOKE", shift = At.Shift.AFTER,
-			target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;"
-					+ "onPlayerDestroyBlock(Lnet/minecraft/util/math/BlockPos;)Z"),
-			locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void onInstantMine(BlockPos loc, EnumFacing face, CallbackInfoReturnable<Boolean> cir, PlayerInteractEvent.LeftClickBlock event, IBlockState iblockstate, boolean flag) {
-
-		Minecraft mc = Minecraft.getMinecraft();
+			target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;onPlayerDestroyBlock(Lnet/minecraft/util/math/BlockPos;)Z"), locals = LocalCapture.CAPTURE_FAILSOFT)
+	private void onInstantMine(BlockPos loc, EnumFacing face, CallbackInfoReturnable<Boolean> cir, PlayerInteractEvent.LeftClickBlock event, IBlockState iblockstate) {
+		final Minecraft mc = Minecraft.getMinecraft();
 		if (iblockstate.getBlockHardness(mc.world, loc) > 0.0f) {
 			NetHandlerPlayClient connection = mc.getConnection();
 			connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(loc, face, EnumHand.MAIN_HAND, 0f, 0f, 0f));

@@ -9,8 +9,6 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion(ForgeVersion.mcVersion)
-@IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 10000)
-@IFMLLoadingPlugin.TransformerExclusions("nessiesson.uselessmod.UselessModMixinLoadingPlugin")
 public class UselessModMixinLoadingPlugin implements IFMLLoadingPlugin {
 	public UselessModMixinLoadingPlugin() {
 		MixinBootstrap.init();
