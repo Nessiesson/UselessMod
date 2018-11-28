@@ -22,7 +22,7 @@ public abstract class MixinPlayerControllerMP {
 	private void onInstantMine(BlockPos loc, EnumFacing face, CallbackInfoReturnable<Boolean> cir, PlayerInteractEvent.LeftClickBlock event, IBlockState iblockstate) {
 		final Minecraft mc = Minecraft.getMinecraft();
 		if (iblockstate.getBlockHardness(mc.world, loc) > 0.0f) {
-			NetHandlerPlayClient connection = mc.getConnection();
+			final NetHandlerPlayClient connection = mc.getConnection();
 			connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(loc, face, EnumHand.MAIN_HAND, 0f, 0f, 0f));
 		}
 	}
