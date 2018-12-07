@@ -22,7 +22,7 @@ archivesBaseName = project.modName
 
 repositories {
 	mavenCentral()
-	maven { url = "http://repo.spongepowered.org/maven" }
+	maven { url = "https://repo.spongepowered.org/maven" }
 }
 
 dependencies {
