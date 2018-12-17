@@ -13,7 +13,6 @@
 		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
 		"MixinRenderGlobal",
-		"MixinTeleportToPlayer",
-		"MixinWorldClient"
+		"MixinTeleportToPlayer"
 	]
 }
