@@ -1,35 +1,19 @@
 buildscript {
 	repositories {
-		mavenLocal()
-		mavenCentral()
-		maven {
-			name = "sonatype"
-			url = "https://oss.sonatype.org/content/repositories/snapshots/"
-		}
-		maven {
-			name = "forge"
-			url = "http://files.minecraftforge.net/maven"
-		}
-		maven {
-			name = "sponge"
-			url = "http://repo.spongepowered.org/maven"
-		}
+		jcenter()
+		maven { url = "https://files.minecraftforge.net/maven" }
+		maven { url = "https://repo.spongepowered.org/maven" }
 	}
 	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:$project.forgeGradleVersion"
-		classpath "org.spongepowered:mixingradle:$project.mixinGradleVersion"
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
 	}
 }
 
 apply plugin: "net.minecraftforge.gradle.liteloader"
 apply plugin: "org.spongepowered.mixin"
 
-version = project.version
-group = project.group
-archivesBaseName = "$project.name-$project.mcVersion"
-
 minecraft {
-	// these values are defined in the gradle.properties file, so that this file does not need to be altered
 	version = project.mcVersion
 	mappings = project.mcMappings
 	runDir = "run"
@@ -56,13 +40,12 @@ litemod {
 		mcversion = project.mcVersion
 		description = "A very UselessMod."
 		mixinConfigs += "mixins.uselessmod.json"
-
 	}
 }
 
 jar {
 	classifier = ""
-	baseName = archivesBaseName
+	baseName = "$project.name-$project.mcVersion"
 	from litemod.outputs
 }
 

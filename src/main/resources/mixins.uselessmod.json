@@ -1,6 +1,6 @@
 {
-	"required": true,
 	"package": "nessiesson.uselessmod.mixins",
+	"minVersion": "0.7.3",
 	"mixins": [
 		"ISoundHandler",
 		"MixinBlock",
@@ -8,11 +8,8 @@
 		"MixinEntityItem",
 		"MixinEntityPlayerSP",
 		"MixinGameSettings",
-		"MixinGuiBossOverlay",
 		"MixinGuiOverlayDebug",
-		"MixinKeyBinding",
 		"MixinMinecraft",
-		"MixinMusicTicker",
 		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
 		"MixinRenderGlobal",
