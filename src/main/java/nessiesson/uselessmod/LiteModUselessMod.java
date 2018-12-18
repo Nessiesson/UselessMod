@@ -13,8 +13,8 @@ import org.lwjgl.input.Keyboard;
 import java.io.File;
 
 public class LiteModUselessMod implements Tickable {
-	private static KeyBinding reloadAudioEngineKey = new KeyBinding("Reload audio engine", Keyboard.KEY_B, "UselessMod");
 	public static boolean isScoreboardHidden = false;
+	private static KeyBinding reloadAudioEngineKey = new KeyBinding("Reload audio engine", Keyboard.KEY_B, "UselessMod");
 	private static KeyBinding hideSidebarScoreboard = new KeyBinding("Hide sidebar scoreboard", Keyboard.KEY_V, "UselessMod");
 
 	@Override
