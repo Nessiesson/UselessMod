@@ -14,6 +14,8 @@ import java.io.File;
 
 public class LiteModUselessMod implements Tickable {
 	private static KeyBinding reloadAudioEngineKey = new KeyBinding("Reload audio engine", Keyboard.KEY_B, "UselessMod");
+	public static boolean isScoreboardHidden = false;
+	private static KeyBinding hideSidebarScoreboard = new KeyBinding("Hide sidebar scoreboard", Keyboard.KEY_V, "UselessMod");
 
 	@Override
 	public String getVersion() {
@@ -23,6 +25,7 @@ public class LiteModUselessMod implements Tickable {
 	@Override
 	public void init(File configPath) {
 		LiteLoader.getInput().registerKeyBinding(reloadAudioEngineKey);
+		LiteLoader.getInput().registerKeyBinding(hideSidebarScoreboard);
 	}
 
 	@Override
@@ -36,9 +39,15 @@ public class LiteModUselessMod implements Tickable {
 
 	@Override
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) {
+		if (!inGame) {
+			return;
+		}
 		if (reloadAudioEngineKey.isPressed()) {
 			((ISoundHandler) minecraft.getSoundHandler()).getSoundManager().reloadSoundSystem();
 			this.debugFeedback("Reloaded sound engine");
+		}
+		if (hideSidebarScoreboard.isPressed()) {
+			isScoreboardHidden = !isScoreboardHidden;
 		}
 	}
 
