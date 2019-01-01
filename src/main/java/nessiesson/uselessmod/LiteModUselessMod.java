@@ -16,6 +16,7 @@ public class LiteModUselessMod implements Tickable {
 	public static boolean isScoreboardHidden = false;
 	private static KeyBinding reloadAudioEngineKey = new KeyBinding("Reload audio engine", Keyboard.KEY_B, "UselessMod");
 	private static KeyBinding hideSidebarScoreboard = new KeyBinding("Hide sidebar scoreboard", Keyboard.KEY_V, "UselessMod");
+	public static KeyBinding highlightEntities = new KeyBinding("Highlight Entities (Spectators)", Keyboard.KEY_C, "UselessMod");
 
 	@Override
 	public String getVersion() {
@@ -26,6 +27,7 @@ public class LiteModUselessMod implements Tickable {
 	public void init(File configPath) {
 		LiteLoader.getInput().registerKeyBinding(reloadAudioEngineKey);
 		LiteLoader.getInput().registerKeyBinding(hideSidebarScoreboard);
+		LiteLoader.getInput().registerKeyBinding(highlightEntities);
 	}
 
 	@Override
