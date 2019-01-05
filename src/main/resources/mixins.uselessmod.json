@@ -13,6 +13,7 @@
 		"MixinMinecraft",
 		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
+		"MixinPlayerMenuObject",
 		"MixinRenderGlobal",
 		"MixinTeleportToPlayer"
 	]
