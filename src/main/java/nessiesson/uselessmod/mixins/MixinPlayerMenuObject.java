@@ -22,6 +22,6 @@ public abstract class MixinPlayerMenuObject {
 	private void redirectbindTexture(TextureManager textureManager, ResourceLocation resource) {
 		final Minecraft mc = Minecraft.getMinecraft();
 		final NetworkPlayerInfo npi = mc.player.connection.getPlayerInfo(this.profile.getName());
-		Minecraft.getMinecraft().getTextureManager().bindTexture(npi.getLocationSkin());
+		mc.getTextureManager().bindTexture(npi.getLocationSkin());
 	}
 }
