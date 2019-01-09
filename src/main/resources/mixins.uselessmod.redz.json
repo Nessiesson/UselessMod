@@ -1,0 +1,9 @@
+{
+	"package": "nessiesson.uselessmod.mixins.redz",
+	"minVersion": "0.7.3",
+	"mixins": [
+		"MixinKeyBinding",
+		"MixinParticleManager",
+		"MixinShulkerBoxDisplayRenderer"
+	]
+}

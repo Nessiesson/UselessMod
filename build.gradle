@@ -24,12 +24,10 @@ minecraft {
 }
 
 dependencies {
-	// For Mixin auditing.
 	compile "org.jetbrains.java.decompiler:fernflower:sponge-SNAPSHOT"
 }
 
 mixin {
-	// liteloader does not do runtime deobfuscation, so in production we use "notch names", mixin needs to know this
 	defaultObfuscationEnv notch
 }
 
@@ -40,6 +38,7 @@ litemod {
 		mcversion = project.mcVersion
 		description = "A very UselessMod."
 		mixinConfigs += "mixins.uselessmod.json"
+		//mixinConfigs += "mixins.uselessmod.redz.json"
 	}
 }
 

@@ -9,8 +9,6 @@
 		"MixinEntityPlayerSP",
 		"MixinGameSettings",
 		"MixinGuiIngame",
-		"MixinGuiOverlayDebug",
-		"MixinKeyBinding",
 		"MixinMinecraft",
 		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
