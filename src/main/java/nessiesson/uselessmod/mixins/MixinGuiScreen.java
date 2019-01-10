@@ -14,15 +14,11 @@ public abstract class MixinGuiScreen {
 	@Shadow
 	protected Minecraft mc;
 
-	@Inject(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;handleMouseInput()V"), cancellable = true)
-	private void mc31222Mouse(CallbackInfo ci) {
-		if ((GuiScreen) (Object) this != this.mc.currentScreen) {
-			ci.cancel();
-		}
-	}
-
-	@Inject(method = "handleInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;handleKeyboardInput()V"), cancellable = true)
-	private void mc31222Keyboard(CallbackInfo ci) {
+	@Inject(method = "handleInput", at = {
+			@At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;handleKeyboardInput()V"),
+			@At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;handleMouseInput()V")},
+			cancellable = true)
+	private void mc31222(CallbackInfo ci) {
 		if ((GuiScreen) (Object) this != this.mc.currentScreen) {
 			ci.cancel();
 		}
