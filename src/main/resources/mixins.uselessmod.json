@@ -4,6 +4,7 @@
 	"mixins": [
 		"ISoundHandler",
 		"MixinBlock",
+		"MixinClientBrandRetriever",
 		"MixinCommandBase",
 		"MixinEntityItem",
 		"MixinEntityPlayerSP",

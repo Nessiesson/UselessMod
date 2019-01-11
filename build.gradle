@@ -23,10 +23,6 @@ minecraft {
 	replace "@NAME@", project.name
 }
 
-dependencies {
-	compile "org.jetbrains.java.decompiler:fernflower:sponge-SNAPSHOT"
-}
-
 mixin {
 	defaultObfuscationEnv notch
 }
