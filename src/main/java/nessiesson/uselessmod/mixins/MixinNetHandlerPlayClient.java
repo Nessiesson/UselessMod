@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import com.google.common.collect.Lists;
 import nessiesson.uselessmod.LiteModUselessMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -9,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketCollectItem;
 import net.minecraft.network.play.server.SPacketSetSlot;
@@ -18,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.List;
 
 @Mixin(NetHandlerPlayClient.class)
 public abstract class MixinNetHandlerPlayClient {
@@ -36,7 +40,7 @@ public abstract class MixinNetHandlerPlayClient {
 	@Inject(method = "handleCollectItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;playSound(DDDLnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FFZ)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void simulateMending(SPacketCollectItem packetIn, CallbackInfo ci, Entity entity, EntityLivingBase player) {
 		EntityXPOrb orb = (EntityXPOrb) entity;
-		ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
+		ItemStack itemstack = this.getFakeEnchantedItem(player);
 
 		if (!itemstack.isEmpty() && itemstack.isItemDamaged()) {
 			int i = Math.min(this.xpToDurability(orb.getXpValue()), itemstack.getItemDamage());
@@ -51,5 +55,28 @@ public abstract class MixinNetHandlerPlayClient {
 
 	private int xpToDurability(int xp) {
 		return xp * 2;
+	}
+
+	private ItemStack getFakeEnchantedItem(EntityLivingBase entity) {
+		List<ItemStack> list = Lists.newArrayList();
+		int mainHand = -1;
+		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			ItemStack itemstack = entity.getItemStackFromSlot(slot);
+
+			if (!itemstack.isEmpty() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, itemstack) > 0) {
+				if (slot == EntityEquipmentSlot.MAINHAND) {
+					mainHand = list.size() - 1;
+				}
+				list.add(itemstack);
+			}
+		}
+
+		int selectedSlot = entity.getRNG().nextInt(list.size());
+
+		if (list.isEmpty() || selectedSlot == mainHand) {
+			return ItemStack.EMPTY;
+		} else {
+			return list.get(selectedSlot);
+		}
 	}
 }
