@@ -2,6 +2,7 @@
 	"package": "nessiesson.uselessmod.mixins",
 	"minVersion": "0.7.3",
 	"mixins": [
+		"IEntityXPOrb",
 		"ISoundHandler",
 		"MixinBlock",
 		"MixinClientBrandRetriever",
