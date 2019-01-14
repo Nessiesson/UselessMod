@@ -3,14 +3,8 @@ package nessiesson.uselessmod.mixins;
 import nessiesson.uselessmod.LiteModUselessMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SPacketCollectItem;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,25 +25,5 @@ public abstract class MixinNetHandlerPlayClient {
 			LiteModUselessMod.shouldPlayBreakSound = false;
 			this.client.player.renderBrokenItemStack(LiteModUselessMod.whichToolShouldBreak);
 		}
-	}
-
-	@Inject(method = "handleCollectItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;playSound(DDDLnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FFZ)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void simulateMending(SPacketCollectItem packetIn, CallbackInfo ci, Entity entity, EntityLivingBase player) {
-		EntityXPOrb orb = (EntityXPOrb) entity;
-		ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
-
-		if (!itemstack.isEmpty() && itemstack.isItemDamaged()) {
-			int i = Math.min(this.xpToDurability(orb.getXpValue()), itemstack.getItemDamage());
-			((IEntityXPOrb) orb).setXpValue(orb.getXpValue() - this.durabilityToXp(i));
-			itemstack.setItemDamage(itemstack.getItemDamage() - i);
-		}
-	}
-
-	private int durabilityToXp(int durability) {
-		return durability / 2;
-	}
-
-	private int xpToDurability(int xp) {
-		return xp * 2;
 	}
 }
