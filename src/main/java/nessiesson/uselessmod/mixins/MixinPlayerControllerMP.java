@@ -1,12 +1,9 @@
 package nessiesson.uselessmod.mixins;
 
-import nessiesson.uselessmod.LiteModUselessMod;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,15 +27,6 @@ public abstract class MixinPlayerControllerMP {
 		if (iblockstate.getBlockHardness(this.mc.world, loc) > 0.0F) {
 			final NetHandlerPlayClient connection = this.mc.getConnection();
 			connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(loc, face, EnumHand.MAIN_HAND, 0F, 0F, 0F));
-		}
-	}
-
-	@Inject(method = "onPlayerDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onBlockDestroyed(Lnet/minecraft/world/World;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/EntityPlayer;)V"))
-	private void clientToolBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		final ItemStack handItem = this.mc.player.getHeldItemMainhand();
-		if (handItem.getItem() instanceof ItemTool) {
-			LiteModUselessMod.shouldPlayBreakSound = true;
-			LiteModUselessMod.whichToolShouldBreak = this.mc.player.getHeldItemMainhand();
 		}
 	}
 }

@@ -13,7 +13,6 @@
 		"MixinGuiIngame",
 		"MixinGuiScreen",
 		"MixinMinecraft",
-		"MixinNetHandlerPlayClient",
 		"MixinNetworkManager$5",
 		"MixinPlayerControllerMP",
 		"MixinPlayerMenuObject",
