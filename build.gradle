@@ -25,6 +25,7 @@ minecraft {
 
 mixin {
 	defaultObfuscationEnv notch
+	add sourceSets.main, "mixins.uselessmod.refmap.json"
 }
 
 litemod {

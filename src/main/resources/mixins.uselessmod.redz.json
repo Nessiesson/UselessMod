@@ -1,5 +1,6 @@
 {
 	"package": "nessiesson.uselessmod.mixins.redz",
+	"refmap": "mixins.uselessmod.refmap.json",
 	"minVersion": "0.7.3",
 	"mixins": [
 		"MixinKeyBinding",
