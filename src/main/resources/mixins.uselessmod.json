@@ -17,6 +17,7 @@
 		"MixinPlayerControllerMP",
 		"MixinPlayerMenuObject",
 		"MixinRenderGlobal",
-		"MixinTeleportToPlayer"
+		"MixinTeleportToPlayer",
+		"MixinWorld"
 	]
 }
