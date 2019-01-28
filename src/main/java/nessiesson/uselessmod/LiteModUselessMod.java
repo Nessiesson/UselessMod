@@ -10,6 +10,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 import java.io.File;
 
@@ -31,6 +32,8 @@ public class LiteModUselessMod implements Tickable {
 		LiteLoader.getInput().registerKeyBinding(reloadAudioEngineKey);
 		LiteLoader.getInput().registerKeyBinding(hideSidebarScoreboard);
 		LiteLoader.getInput().registerKeyBinding(highlightEntities);
+
+		Display.setTitle(Display.getTitle() + " - " + Minecraft.getMinecraft().getSession().getUsername());
 	}
 
 	@Override
