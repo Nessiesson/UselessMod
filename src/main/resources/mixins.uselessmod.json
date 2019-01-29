@@ -14,6 +14,7 @@
 		"MixinGuiScreen",
 		"MixinMinecraft",
 		"MixinNetworkManager$5",
+		"MixinParticleManager",
 		"MixinPlayerControllerMP",
 		"MixinPlayerMenuObject",
 		"MixinRenderGlobal",
