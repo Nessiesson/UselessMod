@@ -12,6 +12,7 @@
 		"MixinGameSettings",
 		"MixinGuiIngame",
 		"MixinGuiScreen",
+		"MixinKeyBinding",
 		"MixinMinecraft",
 		"MixinNetworkManager$5",
 		"MixinParticleManager",

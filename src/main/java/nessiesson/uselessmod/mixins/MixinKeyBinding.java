@@ -1,4 +1,4 @@
-package nessiesson.uselessmod.mixins.redz;
+package nessiesson.uselessmod.mixins;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.settings.KeyBinding;
