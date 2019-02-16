@@ -9,14 +9,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ParticleDigging.class)
-public abstract class MixinParticleManager extends Particle {
-	protected MixinParticleManager(World worldIn, double posXIn, double posYIn, double posZIn) {
+public abstract class MixinParticleDigging extends Particle {
+	protected MixinParticleDigging(World worldIn, double posXIn, double posYIn, double posZIn) {
 		super(worldIn, posXIn, posYIn, posZIn);
 	}
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void removeRandomParticleMotion(CallbackInfo ci) {
-		this.motionX = this.motionY = this.motionZ = 0.0D;
-		this.particleGravity = 0.0F;
+		final double multiplier = 3.0;
+		this.motionX *= multiplier;
+		this.motionY *= multiplier;
+		this.motionZ *= multiplier;
+		this.particleMaxAge *= 2.0;
+		//this.motionX = this.motionY = this.motionZ = 0.0;
+		//this.particleGravity = 0.0F;
 	}
 }

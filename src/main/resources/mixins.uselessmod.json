@@ -15,7 +15,7 @@
 		"MixinKeyBinding",
 		"MixinMinecraft",
 		"MixinNetworkManager$5",
-		"MixinParticleManager",
+		"MixinParticleDigging",
 		"MixinPlayerControllerMP",
 		"MixinPlayerMenuObject",
 		"MixinRenderGlobal",
