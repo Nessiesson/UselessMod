@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Iterator;
 
 @Mixin(World.class)
-public class MixinWorld {
+public abstract class MixinWorld {
 	@Shadow
 	@Final
 	public Profiler profiler;
