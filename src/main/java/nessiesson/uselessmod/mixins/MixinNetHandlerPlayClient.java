@@ -17,7 +17,7 @@ public abstract class MixinNetHandlerPlayClient {
 		LiteModUselessMod.lastTimeUpdate = currentTime;
 
 		if (dt > 0L) {
-			LiteModUselessMod.MSPT = Math.max(50.0, dt * 5e-8);
+			LiteModUselessMod.mspt = Math.max(50.0, dt * 5e-8);
 		}
 	}
 }

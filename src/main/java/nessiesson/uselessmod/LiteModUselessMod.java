@@ -16,7 +16,7 @@ import java.io.File;
 public class LiteModUselessMod implements Tickable {
 	public static boolean isScoreboardHidden;
 	public static long lastTimeUpdate;
-	public static double MSPT;
+	public static double mspt;
 	private static KeyBinding reloadAudioEngineKey = new KeyBinding("Reload audio engine", Keyboard.KEY_B, "UselessMod");
 	private static KeyBinding hideSidebarScoreboard = new KeyBinding("Hide sidebar scoreboard", Keyboard.KEY_V, "UselessMod");
 	public static KeyBinding highlightEntities = new KeyBinding("Highlight Entities (Spectators)", Keyboard.KEY_C, "UselessMod");

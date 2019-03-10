@@ -13,6 +13,8 @@ import java.util.List;
 public abstract class MixinGuiOverlayDebug {
 	@Inject(method = "call", at = @At("RETURN"))
 	private void tpsDebugText(CallbackInfoReturnable<List<String>> cir) {
-		cir.getReturnValue().set(3, String.format("%s, MSPT: %.1f, TPS: %.1f", cir.getReturnValue().get(3), LiteModUselessMod.MSPT, 1000.0 / LiteModUselessMod.MSPT));
+		final double mspt = LiteModUselessMod.mspt;
+		final String currentLine = cir.getReturnValue().get(4);
+		cir.getReturnValue().set(4, String.format("%s, mspt: %.1f, tps: %.1f", currentLine, mspt, 1000.0 / mspt));
 	}
 }
