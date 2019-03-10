@@ -5,7 +5,6 @@ import com.mumfrey.liteloader.core.LiteLoader;
 import nessiesson.uselessmod.mixins.ISoundHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -15,9 +14,9 @@ import org.lwjgl.opengl.Display;
 import java.io.File;
 
 public class LiteModUselessMod implements Tickable {
-	public static boolean shouldPlayBreakSound;
-	public static ItemStack whichToolShouldBreak;
-	public static boolean isScoreboardHidden = false;
+	public static boolean isScoreboardHidden;
+	public static long lastTimeUpdate;
+	public static double MSPT;
 	private static KeyBinding reloadAudioEngineKey = new KeyBinding("Reload audio engine", Keyboard.KEY_B, "UselessMod");
 	private static KeyBinding hideSidebarScoreboard = new KeyBinding("Hide sidebar scoreboard", Keyboard.KEY_V, "UselessMod");
 	public static KeyBinding highlightEntities = new KeyBinding("Highlight Entities (Spectators)", Keyboard.KEY_C, "UselessMod");
