@@ -4,6 +4,8 @@ import com.mumfrey.liteloader.Tickable;
 import com.mumfrey.liteloader.core.LiteLoader;
 import nessiesson.uselessmod.mixins.ISoundHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -55,6 +57,14 @@ public class LiteModUselessMod implements Tickable {
 		}
 		if (hideSidebarScoreboard.isPressed()) {
 			isScoreboardHidden = !isScoreboardHidden;
+		}
+		EntityPlayerSP p = minecraft.player;
+		if (p.isAirBorne && p.capabilities.isFlying) {
+			GameSettings s = minecraft.gameSettings;
+			if (!(GameSettings.isKeyDown(s.keyBindForward) || GameSettings.isKeyDown(s.keyBindBack) || GameSettings.isKeyDown(s.keyBindLeft) || GameSettings.isKeyDown(s.keyBindRight))) {
+				p.motionX = 0.0;
+				p.motionZ = 0.0;
+			}
 		}
 	}
 
