@@ -10,6 +10,7 @@
 		"MixinEntityItem",
 		"MixinEntityPlayerSP",
 		"MixinGameSettings",
+		"MixinGuiBossOverlay",
 		"MixinGuiIngame",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
