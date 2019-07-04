@@ -7,13 +7,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.io.File;
+
+// [10:42 PM] Robi: nessie go add ctrl mousewheel to useful mod so u can instant resize gui xd
 
 public class LiteModUselessMod implements Tickable {
 	public static boolean isScoreboardHidden;
@@ -59,7 +63,7 @@ public class LiteModUselessMod implements Tickable {
 			isScoreboardHidden = !isScoreboardHidden;
 		}
 		EntityPlayerSP p = minecraft.player;
-		if (p.isAirBorne && p.capabilities.isFlying) {
+		if (p.capabilities.isFlying) {
 			GameSettings s = minecraft.gameSettings;
 			if (!(GameSettings.isKeyDown(s.keyBindForward) || GameSettings.isKeyDown(s.keyBindBack) || GameSettings.isKeyDown(s.keyBindLeft) || GameSettings.isKeyDown(s.keyBindRight))) {
 				p.motionX = 0.0;
@@ -69,12 +73,12 @@ public class LiteModUselessMod implements Tickable {
 	}
 
 	private void debugFeedback(String string) {
-		Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(
-				(new TextComponentString(""))
-						.appendSibling((new TextComponentString("[Debug]:"))
-								.setStyle((new Style()).setColor(TextFormatting.YELLOW).setBold(true)))
-						.appendText(" ")
-						.appendSibling(new TextComponentString(string))
-		);
+		ITextComponent tag = new TextComponentTranslation("debug.prefix");
+		ITextComponent text = new TextComponentString(string);
+
+		tag.setStyle(new Style().setColor(TextFormatting.YELLOW).setBold(true));
+		ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
+
+		Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
 	}
 }

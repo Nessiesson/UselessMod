@@ -22,6 +22,7 @@
 		"MixinPlayerControllerMP",
 		"MixinPlayerMenuObject",
 		"MixinRenderGlobal",
+		"MixinShulkerBoxDisplayRenderer",
 		"MixinSpectatorMenu",
 		"MixinTeleportToPlayer",
 		"MixinWorld"

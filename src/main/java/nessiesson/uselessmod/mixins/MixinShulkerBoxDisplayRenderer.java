@@ -1,4 +1,4 @@
-package nessiesson.uselessmod.mixins.redz;
+package nessiesson.uselessmod.mixins;
 
 import nessiesson.uselessmod.ShulkerBoxDisplay;
 import net.minecraft.client.gui.Gui;
