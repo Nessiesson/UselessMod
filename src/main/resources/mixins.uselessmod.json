@@ -5,6 +5,7 @@
 	"mixins": [
 		"ISoundHandler",
 		"MixinBlock",
+		"MixinBlockSnow",
 		"MixinClientBrandRetriever",
 		"MixinCommandBase",
 		"MixinEntityItem",
@@ -14,6 +15,7 @@
 		"MixinGuiIngame",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
+		"MixinItemStack",
 		"MixinKeyBinding",
 		"MixinMinecraft",
 		"MixinNetHandlerPlayClient",
