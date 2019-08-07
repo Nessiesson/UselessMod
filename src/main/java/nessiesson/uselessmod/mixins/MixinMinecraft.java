@@ -12,5 +12,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinMinecraft implements IThreadListener, ISnooperInfo {
 	@Redirect(method = "dispatchKeypresses", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionValue(Lnet/minecraft/client/settings/GameSettings$Options;I)V"))
 	private void onSetOptionValue(GameSettings gameSettings, GameSettings.Options settingsOption, int value) {
+		// noop
 	}
 }

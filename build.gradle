@@ -28,15 +28,14 @@ mixin {
 	add sourceSets.main, "mixins.uselessmod.refmap.json"
 }
 
-litemod {
-	json {
+litemod.json {
 		author = "nessie"
 		name = project.name
 		mcversion = project.mcVersion
 		description = "A very UselessMod."
+		classTransformerClasses += "nessiesson.uselessmod.ClassTransformer"
 		mixinConfigs += "mixins.uselessmod.json"
 		//mixinConfigs += "mixins.uselessmod.redz.json"
-	}
 }
 
 jar {
