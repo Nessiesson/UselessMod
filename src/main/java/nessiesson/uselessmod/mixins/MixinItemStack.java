@@ -1,6 +1,7 @@
 package nessiesson.uselessmod.mixins;
 
 import com.google.common.collect.Multimap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,15 +19,15 @@ public abstract class MixinItemStack {
 
 	@Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z", remap = false))
 	private boolean noAttributes(Multimap multimap) {
-		return true;
+		return !Minecraft.getMinecraft().gameSettings.advancedItemTooltips;
 	}
 
 	@Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getEnchantmentTagList()Lnet/minecraft/nbt/NBTTagList;"))
 	private NBTTagList sortEnchantments(ItemStack item) {
 		final NBTTagList list = this.getEnchantmentTagList();
 		final Comparator comp = Comparator.<NBTTagCompound>comparingInt(t -> t.getShort("lvl"))
-				.thenComparingInt(t -> t.getShort("id"))
-				.reversed();
+				.reversed()
+				.thenComparingInt(t -> t.getShort("id"));
 		((INBTTagList) list).getTagList().sort(comp);
 		return list;
 	}
