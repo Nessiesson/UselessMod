@@ -3,6 +3,7 @@
 	"refmap": "mixins.uselessmod.refmap.json",
 	"minVersion": "0.7.3",
 	"mixins": [
+		"INBTTagList",
 		"ISoundHandler",
 		"MixinBlock",
 		"MixinBlockSnow",
@@ -25,6 +26,7 @@
 		"MixinPlayerControllerMP",
 		"MixinPlayerMenuObject",
 		"MixinRenderGlobal",
+		"MixinRenderManager",
 		"MixinServerListEntryNormal",
 		"MixinShulkerBoxDisplayRenderer",
 		"MixinSpectatorMenu",
