@@ -3,6 +3,7 @@
 	"refmap": "mixins.uselessmod.refmap.json",
 	"minVersion": "0.7.3",
 	"mixins": [
+		"IGuiChat",
 		"INBTTagList",
 		"ISoundHandler",
 		"MixinBlock",

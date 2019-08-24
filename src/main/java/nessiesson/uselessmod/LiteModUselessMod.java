@@ -1,5 +1,6 @@
 package nessiesson.uselessmod;
 
+import com.mumfrey.liteloader.PostRenderListener;
 import com.mumfrey.liteloader.Tickable;
 import com.mumfrey.liteloader.core.LiteLoader;
 import nessiesson.uselessmod.mixins.ISoundHandler;
@@ -19,7 +20,7 @@ import java.io.File;
 
 // [10:42 PM] Robi: nessie go add ctrl mousewheel to useful mod so u can instant resize gui xd
 
-public class LiteModUselessMod implements Tickable {
+public class LiteModUselessMod implements Tickable, PostRenderListener {
 	public static boolean isScoreboardHidden;
 	public static long lastTimeUpdate;
 	public static double mspt;
@@ -43,6 +44,7 @@ public class LiteModUselessMod implements Tickable {
 
 	@Override
 	public void upgradeSettings(String version, File configPath, File oldConfigPath) {
+		// noop
 	}
 
 	@Override
@@ -55,13 +57,16 @@ public class LiteModUselessMod implements Tickable {
 		if (!inGame) {
 			return;
 		}
+
 		if (reloadAudioEngineKey.isPressed()) {
 			((ISoundHandler) minecraft.getSoundHandler()).getSoundManager().reloadSoundSystem();
 			this.debugFeedback("Reloaded sound engine");
 		}
+
 		if (hideSidebarScoreboard.isPressed()) {
 			isScoreboardHidden = !isScoreboardHidden;
 		}
+
 		EntityPlayerSP p = minecraft.player;
 		if (p.capabilities.isFlying) {
 			GameSettings s = minecraft.gameSettings;
@@ -80,5 +85,15 @@ public class LiteModUselessMod implements Tickable {
 		ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
 
 		Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
+	}
+
+	@Override
+	public void onPostRenderEntities(float partialTicks) {
+		ClonePositionRenderer.render(partialTicks);
+	}
+
+	@Override
+	public void onPostRender(float partialTicks) {
+		// noop
 	}
 }
