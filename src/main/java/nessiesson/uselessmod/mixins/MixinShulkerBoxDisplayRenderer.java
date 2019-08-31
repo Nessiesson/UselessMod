@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import nessiesson.uselessmod.ShulkerBoxDisplay;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinShulkerBoxDisplayRenderer extends Gui {
 	@Inject(method = "renderToolTip", at = @At("RETURN"))
 	private void postRenderToolTip(ItemStack stack, int x, int y, CallbackInfo ci) {
-		ShulkerBoxDisplay.handleShulkerBoxDisplayRenderer(stack, x, y, this);
+		if (Configuration.shulkerBoxDisplay) {
+			ShulkerBoxDisplay.handleShulkerBoxDisplayRenderer(stack, x, y, this);
+		}
 	}
 }

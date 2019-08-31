@@ -1,6 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
-import nessiesson.uselessmod.LiteModUselessMod;
+import nessiesson.uselessmod.UselessMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -29,7 +29,7 @@ public abstract class MixinRenderGlobal {
 
 	@Inject(method = "isOutlineActive", at = @At("HEAD"), cancellable = true)
 	private void highlightAllEntitites(Entity entityIn, Entity viewer, ICamera camera, CallbackInfoReturnable<Boolean> cir) {
-		if (this.mc.player.isSpectator() && LiteModUselessMod.highlightEntities.isKeyDown()) {
+		if (this.mc.player.isSpectator() && UselessMod.highlightEntities.isKeyDown()) {
 			cir.setReturnValue((entityIn instanceof EntityLivingBase || entityIn instanceof EntityMinecart) && (entityIn.ignoreFrustumCheck || camera.isBoundingBoxInFrustum(entityIn.getEntityBoundingBox()) || entityIn.isRidingOrBeingRiddenBy(this.mc.player)));
 		}
 	}

@@ -1,6 +1,7 @@
 package nessiesson.uselessmod.mixins;
 
 import com.google.common.collect.Multimap;
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +29,9 @@ public abstract class MixinItemStack {
 		final Comparator comp = Comparator.<NBTTagCompound>comparingInt(t -> t.getShort("lvl"))
 				.reversed()
 				.thenComparingInt(t -> t.getShort("id"));
-		((INBTTagList) list).getTagList().sort(comp);
+		if (Configuration.sortEnchantmentTooltip) {
+			list.tagList.sort(comp);
+		}
 		return list;
 	}
 }

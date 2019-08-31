@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinRenderManager {
 	@Inject(method = "renderEntityStatic", at = @At("HEAD"), cancellable = true)
 	private void hideDeathAnimation(Entity entity, float f, boolean z, CallbackInfo ci) {
-		if (!(entity instanceof EntityLivingBase)) {
+		if (!(Configuration.hideDeathAnimations && entity instanceof EntityLivingBase)) {
 			return;
 		}
 		final EntityLivingBase mob = (EntityLivingBase) entity;

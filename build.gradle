@@ -3,45 +3,114 @@ buildscript {
 		jcenter()
 		maven { url = "https://files.minecraftforge.net/maven" }
 		maven { url = "https://repo.spongepowered.org/maven" }
+		maven { url = "https://plugins.gradle.org/m2" }
 	}
 	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
+		classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
 	}
 }
 
-apply plugin: "net.minecraftforge.gradle.liteloader"
+apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "org.spongepowered.mixin"
+apply plugin: "com.github.johnrengelman.shadow"
+
+version = "1.0"
+def modName = "UselessMod".toString()
+def modId = modName.toLowerCase()
+group = "nessiesson.${modId}"
+def loadingPlugin = "${group}.${modName}LoadingPlugin"
+archivesBaseName = modName
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = "1.8"
 
 minecraft {
-	version = project.mcVersion
-	mappings = project.mcMappings
+	version = "1.12.2-14.23.5.2768"
+	mappings = "stable_39"
+	coreMod = loadingPlugin
 	runDir = "run"
-	makeObfSourceJar = false
 
+	replaceIn "Reference.java"
 	replace "@VERSION@", project.version
-	replace "@NAME@", project.name
+	replace "@MODNAME@", modName
+	replace "@MODID@", modId
+
+	def args = [
+			"-Dmixin.hotSwap=true",
+			"-Dmixin.debug=true"
+	]
+	clientJvmArgs.addAll(args)
+	serverJvmArgs.addAll(args)
+}
+
+jar.manifest.attributes(
+		"FMLCorePluginContainsFMLMod": true,
+		"FMLCorePlugin": loadingPlugin,
+		"ForceLoadAsMod": true,
+		"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+		"FMLAT": "${modId}_at.cfg"
+)
+
+repositories {
+	mavenCentral()
+	maven { url = "https://repo.spongepowered.org/maven" }
+}
+
+dependencies {
+	compile("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+		exclude module: "asm-commons"
+		exclude module: "asm-tree"
+		exclude module: "launchwrapper"
+		exclude module: "guava"
+		exclude module: "log4j-core"
+		exclude module: "gson"
+		exclude module: "commons-io"
+	}
 }
 
 mixin {
-	defaultObfuscationEnv notch
 	add sourceSets.main, "mixins.uselessmod.refmap.json"
 }
 
-litemod.json {
-		author = "nessie"
-		name = project.name
-		mcversion = project.mcVersion
-		description = "A very UselessMod."
-		classTransformerClasses += "nessiesson.uselessmod.ClassTransformer"
-		mixinConfigs += "mixins.uselessmod.json"
-		//mixinConfigs += "mixins.uselessmod.redz.json"
+shadowJar {
+	exclude "dummyThing"
+	exclude "LICENSE.txt"
+
+	dependencies {
+		include(dependency("org.spongepowered:mixin"))
+	}
+
+	classifier = ""
+}
+build.dependsOn(shadowJar)
+
+reobf {
+	shadowJar {
+		mappingType = "SEARGE"
+		classpath = sourceSets.main.compileClasspath
+	}
 }
 
-jar {
-	classifier = ""
-	baseName = "$project.name-$project.mcVersion"
-	from litemod.outputs
+processResources {
+	inputs.property "modName", modName
+	inputs.property "modId", modId
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	from(sourceSets.main.resources.srcDirs) {
+		include "mcmod.info"
+		include "pack.mcmeta"
+
+		expand "version": project.version, "mcversion": project.minecraft.version, "modName": modName, "modId": modId
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "mcmod.info"
+		exclude "pack.mcmeta"
+	}
+
+	rename "(.+_at.cfg)", "META-INF/\$1"
 }
 
 runClient {

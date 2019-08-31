@@ -1,6 +1,5 @@
 package nessiesson.uselessmod;
 
-import nessiesson.uselessmod.mixins.IGuiChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiChat;
@@ -18,7 +17,7 @@ public class ClonePositionRenderer {
 		}
 
 		final GuiChat chat = (GuiChat) mc.currentScreen;
-		final String msg = ((IGuiChat) chat).getInputField().getText().trim();
+		final String msg = chat.inputField.getText().trim();
 		final String[] args = msg.split(" ");
 		if (args.length == 0 || !args[0].equals("/clone")) {
 			return;

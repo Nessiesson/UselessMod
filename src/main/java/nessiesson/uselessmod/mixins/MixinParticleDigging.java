@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.world.World;
@@ -16,11 +17,13 @@ public abstract class MixinParticleDigging extends Particle {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void removeRandomParticleMotion(CallbackInfo ci) {
-		final double multiplier = 3.0;
-		this.motionX *= multiplier;
-		this.motionY *= multiplier;
-		this.motionZ *= multiplier;
-		this.particleMaxAge *= 2.0;
-		this.particleGravity = 0.0F;
+		if (Configuration.insaneBlockBreakingParticles) {
+			final double multiplier = 3.0;
+			this.motionX *= multiplier;
+			this.motionY *= multiplier;
+			this.motionZ *= multiplier;
+			this.particleMaxAge *= 2.0;
+			this.particleGravity = 0.0F;
+		}
 	}
 }
