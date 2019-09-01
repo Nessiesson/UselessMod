@@ -12,6 +12,7 @@
 		"MixinEntityRenderer",
 		"MixinGameSettings",
 		"MixinGuiBossOverlay",
+		"MixinGuiChat",
 		"MixinGuiIngame",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
