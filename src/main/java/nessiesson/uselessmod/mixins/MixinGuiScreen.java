@@ -29,8 +29,8 @@ public abstract class MixinGuiScreen {
 		}
 	}
 
-	@Overwrite
-	private void openWebLink(URI url) {
+	@Inject(method = "openWebLink", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
+	private void fixRobisShit(URI url, CallbackInfo ci) {
 		DesktopApi.browse(url);
 	}
 
