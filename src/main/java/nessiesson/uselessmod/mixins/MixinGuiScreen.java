@@ -36,6 +36,7 @@ public abstract class MixinGuiScreen {
 
 	/**
 	 * @author nessie
+	 * @reason Using @Overwrite is the simplest way to do this.
 	 */
 	@Overwrite
 	public void sendChatMessage(String msg) {

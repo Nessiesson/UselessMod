@@ -30,6 +30,7 @@ minecraft {
 	mappings = "stable_39"
 	coreMod = loadingPlugin
 	runDir = "run"
+	makeObfSourceJar = false
 
 	replaceIn "Reference.java"
 	replace "@VERSION@", project.version

@@ -1,6 +1,7 @@
 package nessiesson.uselessmod.mixins;
 
 import nessiesson.uselessmod.UselessMod;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiOverlayDebug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,8 +20,8 @@ public abstract class MixinGuiOverlayDebug {
 		cir.getReturnValue().set(4, String.format("%s, mspt: %.1f, tps: %.1f", currentLine, mspt, 1000.0 / mspt));
 	}
 
-	@Redirect(method = "call", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/ClientBrandRetriever;getClientModName()Ljava/lang/String;", remap = false))
-	private String pureVanilla() {
+	@Redirect(method = "call", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getVersion()Ljava/lang/String;"))
+	private String pureVanilla(Minecraft mc) {
 		return "vanilla++";
 	}
 }
