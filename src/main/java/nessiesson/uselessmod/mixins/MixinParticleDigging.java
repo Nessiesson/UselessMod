@@ -18,12 +18,12 @@ public abstract class MixinParticleDigging extends Particle {
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void removeRandomParticleMotion(CallbackInfo ci) {
 		if (Configuration.insaneBlockBreakingParticles) {
-			final double multiplier = 3.0;
+			final double multiplier = 3D;
 			this.motionX *= multiplier;
 			this.motionY *= multiplier;
 			this.motionZ *= multiplier;
-			this.particleMaxAge *= 2.0;
-			this.particleGravity = 0.0F;
+			this.particleMaxAge *= 2D;
+			this.particleGravity = 0F;
 		}
 	}
 }

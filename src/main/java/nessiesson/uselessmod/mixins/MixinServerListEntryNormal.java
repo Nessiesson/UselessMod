@@ -11,10 +11,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinServerListEntryNormal {
 	@Redirect(method = "drawEntry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawString(Ljava/lang/String;III)I", ordinal = 0))
 	private int hideServerNames(FontRenderer fontRenderer, String text, int x, int y, int color) {
-		if (Configuration.hideServerNames) {
-			return 0;
-		} else {
-			return fontRenderer.drawString(text, x, y, color);
-		}
+		return Configuration.showServerNames ? fontRenderer.drawString(text, x, y, color) : 0;
 	}
 }

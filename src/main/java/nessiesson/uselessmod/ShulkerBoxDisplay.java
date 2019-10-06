@@ -22,12 +22,10 @@ public class ShulkerBoxDisplay {
 
 	public static void handleShulkerBoxDisplayRenderer(ItemStack stack, int x, int y, Gui gui) {
 		if (stack != null && stack.getItem() instanceof ItemShulkerBox && stack.hasTagCompound() && GuiScreen.isShiftKeyDown()) {
-			NBTTagCompound cmp = getCompoundOrNull(stack, "BlockEntityTag");
+			NBTTagCompound cmp = getCompoundOrNull(stack);
 			if (cmp != null && cmp.hasKey("Items", 9)) {
 				final int texWidth = 172;
 				final int texHeight = 64;
-
-				final int currentX = x;
 				final int currentY = y - texHeight - 18;
 
 				GlStateManager.pushMatrix();
@@ -42,18 +40,18 @@ public class ShulkerBoxDisplay {
 				final float[] colours = dye.getColorComponentValues();
 				GlStateManager.color(colours[0], colours[1], colours[2]);
 
-				gui.drawTexturedModalRect(currentX, currentY, 0, 0, texWidth, texHeight);
+				gui.drawTexturedModalRect(x, currentY, 0, 0, texWidth, texHeight);
 
-				NonNullList<ItemStack> itemList = NonNullList.withSize(27, ItemStack.EMPTY);
+				final NonNullList<ItemStack> itemList = NonNullList.withSize(27, ItemStack.EMPTY);
 				ItemStackHelper.loadAllItems(cmp, itemList);
 
-				RenderItem render = mc.getRenderItem();
+				final RenderItem render = mc.getRenderItem();
 
 				GlStateManager.enableDepth();
 				int i = 0;
 				for (ItemStack itemstack : itemList) {
 					if (!itemstack.isEmpty()) {
-						final int xp = currentX + 6 + (i % 9) * 18;
+						final int xp = x + 6 + (i % 9) * 18;
 						final int yp = currentY + 6 + (i / 9) * 18;
 
 						render.renderItemAndEffectIntoGUI(itemstack, xp, yp);
@@ -69,10 +67,10 @@ public class ShulkerBoxDisplay {
 		}
 	}
 
-	private static NBTTagCompound getCompoundOrNull(ItemStack stack, String tag) {
-		NBTTagCompound compound = stack.getTagCompound();
-		if (compound != null && compound.hasKey(tag)) {
-			return compound.getCompoundTag(tag);
+	private static NBTTagCompound getCompoundOrNull(ItemStack stack) {
+		final NBTTagCompound compound = stack.getTagCompound();
+		if (compound != null && compound.hasKey("BlockEntityTag")) {
+			return compound.getCompoundTag("BlockEntityTag");
 		} else {
 			return null;
 		}

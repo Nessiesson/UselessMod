@@ -5,6 +5,7 @@
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
 		"MixinBlock",
+		"MixinBlockConcretePowder",
 		"MixinBlockSnow",
 		"MixinCommandBase",
 		"MixinEntityItem",
@@ -16,6 +17,7 @@
 		"MixinGuiIngame",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
+		"MixinItem",
 		"MixinItemStack",
 		"MixinMinecraft",
 		"MixinNetHandlerPlayClient",
@@ -29,6 +31,8 @@
 		"MixinServerListEntryNormal",
 		"MixinShulkerBoxDisplayRenderer",
 		"MixinSpectatorMenu",
-		"MixinTeleportToPlayer"
+		"MixinTeleportToPlayer",
+		"MixinTileEntityRendererDispatcher",
+		"MixinWorldClient"
 	]
 }

@@ -1,11 +1,9 @@
 package nessiesson.uselessmod.mixins;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.profiler.ISnooperInfo;
 import net.minecraft.util.IThreadListener;
-import org.spongepowered.asm.lib.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -15,10 +13,5 @@ public abstract class MixinMinecraft implements IThreadListener, ISnooperInfo {
 	@Redirect(method = "dispatchKeypresses", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionValue(Lnet/minecraft/client/settings/GameSettings$Options;I)V"))
 	private void onSetOptionValue(GameSettings gameSettings, GameSettings.Options settingsOption, int value) {
 		// noop
-	}
-
-	@Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/GuiScreen;allowUserInput:Z", opcode = Opcodes.GETFIELD))
-	private boolean allowDragDropEverywhere(GuiScreen gui) {
-		return gui == null;
 	}
 }

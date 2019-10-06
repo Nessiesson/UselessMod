@@ -34,6 +34,9 @@ public abstract class MixinGuiScreen {
 		DesktopApi.browse(url);
 	}
 
+	/**
+	 * @author nessie
+	 */
 	@Overwrite
 	public void sendChatMessage(String msg) {
 		for (String message : Splitter.fixedLength(256).split(msg)) {

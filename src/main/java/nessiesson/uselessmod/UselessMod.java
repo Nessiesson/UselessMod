@@ -21,28 +21,26 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, clientSideOnly = true)
 public class UselessMod {
-	public static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
-	private static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
-	private static KeyBinding hideSidebarScoreboard = new KeyBinding("key.uselessmod.toggle_scoreboard", KeyConflictContext.IN_GAME, Keyboard.KEY_V, Reference.NAME);
+	final public static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
+	final private static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
+	final private static KeyBinding hideSidebarScoreboard = new KeyBinding("key.uselessmod.toggle_scoreboard", KeyConflictContext.IN_GAME, Keyboard.KEY_V, Reference.NAME);
 	public static boolean isScoreboardHidden;
 	public static long lastTimeUpdate;
 	public static double mspt;
-	private static Logger logger;
-	private static Configuration config;
-	private static Minecraft mc = Minecraft.getMinecraft();
+	final private Minecraft mc = Minecraft.getMinecraft();
+	private static String originalTitle;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		logger = event.getModLog();
 		MinecraftForge.EVENT_BUS.register(this);
-
-		Display.setTitle(Display.getTitle() + " - " + mc.getSession().getUsername());
+		originalTitle = Display.getTitle();
+		updateTitle();
 	}
 
 	@Mod.EventHandler
@@ -62,8 +60,8 @@ public class UselessMod {
 	@SubscribeEvent
 	public void onKeyPressed(InputEvent.KeyInputEvent event) {
 		if (reloadAudioEngineKey.isPressed()) {
-			mc.getSoundHandler().sndManager.reloadSoundSystem();
-			this.debugFeedback("uselessmod.reload_audio");
+			this.mc.getSoundHandler().sndManager.reloadSoundSystem();
+			this.debugFeedback();
 		}
 
 		if (hideSidebarScoreboard.isPressed()) {
@@ -74,24 +72,25 @@ public class UselessMod {
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			final EntityPlayerSP p = mc.player;
+			final EntityPlayerSP p = this.mc.player;
 			if (Configuration.flightInertiaCancellation && p != null && p.capabilities.isFlying) {
-				GameSettings s = mc.gameSettings;
+				final GameSettings s = this.mc.gameSettings;
 				if (!(GameSettings.isKeyDown(s.keyBindForward) || GameSettings.isKeyDown(s.keyBindBack) || GameSettings.isKeyDown(s.keyBindLeft) || GameSettings.isKeyDown(s.keyBindRight))) {
-					p.motionX = 0.0;
-					p.motionZ = 0.0;
+					p.motionX = p.motionZ = 0D;
 				}
 			}
 		}
 	}
 
-	private void debugFeedback(String string) {
-		ITextComponent tag = new TextComponentTranslation("debug.prefix");
-		ITextComponent text = new TextComponentTranslation(string);
+	public static void updateTitle() {
+		Display.setTitle(originalTitle + " - " + Minecraft.getMinecraft().getSession().getUsername());
+	}
 
+	private void debugFeedback() {
+		ITextComponent tag = new TextComponentTranslation("debug.prefix");
+		ITextComponent text = new TextComponentTranslation("uselessmod.reload_audio");
 		tag.setStyle(new Style().setColor(TextFormatting.YELLOW).setBold(true));
 		ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
-
-		mc.ingameGUI.getChatGUI().printChatMessage(message);
+		this.mc.ingameGUI.getChatGUI().printChatMessage(message);
 	}
 }

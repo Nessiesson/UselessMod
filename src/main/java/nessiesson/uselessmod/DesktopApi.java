@@ -9,40 +9,38 @@ import java.util.List;
 // https://stackoverflow.com/questions/18004150/desktop-api-is-not-supported-on-the-current-platform/18004334#18004334
 
 public class DesktopApi {
-
 	public static void browse(URI uri) {
 		openSystemSpecific(uri.toString());
 	}
 
 	private static void openSystemSpecific(String what) {
-		EnumOS os = getOs();
+		final EnumOS os = getOs();
 		if (os.isLinux()) {
-			if (!runCommand("kde-open", "%s", what) && !runCommand("gnome-open", "%s", what)) {
-				runCommand("xdg-open", "%s", what);
+			if (!runCommand("kde-open", what) && !runCommand("gnome-open", what)) {
+				runCommand("xdg-open", what);
 			}
 			return;
 		}
 
 		if (os.isMac()) {
-			runCommand("open", "%s", what);
+			runCommand("open", what);
 			return;
 		}
 
 		if (os.isWindows()) {
-			runCommand("explorer", "%s", what);
+			runCommand("explorer", what);
 		}
 
 	}
 
-	private static boolean runCommand(String command, String args, String file) {
-		String[] parts = prepareCommand(command, args, file);
-
+	private static boolean runCommand(String command, String file) {
+		final String[] parts = prepareCommand(command, "%s", file);
 		try {
 			Process p = Runtime.getRuntime().exec(parts);
 			if (p == null) return false;
 
 			try {
-				int retval = p.exitValue();
+				final int retval = p.exitValue();
 				if (retval == 0) {
 					return false;
 				} else {
@@ -58,7 +56,7 @@ public class DesktopApi {
 
 
 	private static String[] prepareCommand(String command, String args, String file) {
-		List<String> parts = new ArrayList<>();
+		final List<String> parts = new ArrayList<>();
 		parts.add(command);
 
 		if (args != null) {
@@ -68,11 +66,11 @@ public class DesktopApi {
 			}
 		}
 
-		return parts.toArray(new String[parts.size()]);
+		return parts.toArray(new String[0]);
 	}
 
 	private static EnumOS getOs() {
-		String s = System.getProperty("os.name").toLowerCase();
+		final String s = System.getProperty("os.name").toLowerCase();
 		if (s.contains("win")) {
 			return EnumOS.windows;
 		}
@@ -101,18 +99,16 @@ public class DesktopApi {
 	}
 
 
-	public static enum EnumOS {
+	public enum EnumOS {
 		linux, macos, solaris, unknown, windows;
 
 		public boolean isLinux() {
 			return this == linux || this == solaris;
 		}
 
-
 		public boolean isMac() {
 			return this == macos;
 		}
-
 
 		public boolean isWindows() {
 			return this == windows;

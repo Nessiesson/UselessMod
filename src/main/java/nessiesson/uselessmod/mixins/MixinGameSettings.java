@@ -22,8 +22,8 @@ public abstract class MixinGameSettings {
 		if (settingsOption != GameSettings.Options.GAMMA) {
 			return;
 		}
-		ci.cancel();
 
+		ci.cancel();
 		if (value >= 0.95F) {
 			value = 1000.0F;
 		} else if (value >= 0.9F) {
@@ -31,6 +31,7 @@ public abstract class MixinGameSettings {
 		} else {
 			value = Math.min(1.0F, value / 0.9F);
 		}
+
 		this.gammaSetting = value;
 	}
 
@@ -39,11 +40,10 @@ public abstract class MixinGameSettings {
 		if (settingOption != GameSettings.Options.GAMMA) {
 			return;
 		}
-		cir.cancel();
 
+		cir.cancel();
 		final float f = this.getOptionFloatValue(settingOption);
 		String s = I18n.format(settingOption.getTranslation()) + ": ";
-
 		if (f > 1.0F) {
 			s += "GammaBright";
 		} else if (f > 0.95F) {

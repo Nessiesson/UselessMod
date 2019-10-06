@@ -32,6 +32,7 @@ public abstract class MixinItemStack {
 		if (Configuration.sortEnchantmentTooltip) {
 			list.tagList.sort(comp);
 		}
+
 		return list;
 	}
 }
