@@ -7,7 +7,7 @@ public class Configuration {
 	public static boolean alwaysRenderTileEntities = false;
 	public static boolean clientEntityUpdates = true;
 	public static boolean flightInertiaCancellation = false;
-	public static boolean hiddenBlockBreakingParticles = false;
+	public static boolean showBlockBreakingParticles = true;
 	public static boolean insaneBlockBreakingParticles = false;
 	public static boolean showDeathAnimations = true;
 	public static boolean showRain = true;
