@@ -14,4 +14,5 @@ public class Configuration {
 	public static boolean showServerNames = true;
 	public static boolean showShulkerBoxDisplay = false;
 	public static boolean sortEnchantmentTooltip = false;
+	public static boolean hackerman = false;
 }
