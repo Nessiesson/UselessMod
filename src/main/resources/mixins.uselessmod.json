@@ -8,6 +8,7 @@
 		"MixinBlockConcretePowder",
 		"MixinBlockSnow",
 		"MixinCommandBase",
+		"MixinCommandFill",
 		"MixinDebugRendererChunkBorder",
 		"MixinEntityItem",
 		"MixinEntityPlayerSP",
@@ -35,6 +36,7 @@
 		"MixinShulkerBoxDisplayRenderer",
 		"MixinSpectatorMenu",
 		"MixinTeleportToPlayer",
+		"MixinTileEntityPiston",
 		"MixinTileEntityPistonRenderer",
 		"MixinTileEntityRendererDispatcher",
 		"MixinWorldClient"
