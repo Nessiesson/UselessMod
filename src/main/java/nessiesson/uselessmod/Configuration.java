@@ -15,4 +15,6 @@ public class Configuration {
 	public static boolean showShulkerBoxDisplay = false;
 	public static boolean sortEnchantmentTooltip = false;
 	public static boolean hackerman = false;
+	@Config.RangeInt(min = 0)
+	public static int speedyPlace = 4;
 }
