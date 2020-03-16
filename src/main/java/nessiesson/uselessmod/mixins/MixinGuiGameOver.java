@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinGuiGameOver extends GuiScreen {
 	@Inject(method = "updateScreen", at = @At("RETURN"))
 	private void removeRespawnDelay(CallbackInfo ci) {
-		for (GuiButton guibutton : this.buttonList) {
-			guibutton.enabled = true;
+		for (GuiButton button : this.buttonList) {
+			button.enabled = true;
 		}
 	}
 }

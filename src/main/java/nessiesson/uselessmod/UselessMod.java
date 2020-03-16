@@ -31,8 +31,6 @@ import org.lwjgl.opengl.Display;
 public class UselessMod {
 	final public static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
 	final private static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
-	final private static KeyBinding hideSidebarScoreboard = new KeyBinding("key.uselessmod.toggle_scoreboard", KeyConflictContext.IN_GAME, Keyboard.KEY_V, Reference.NAME);
-	public static boolean isScoreboardHidden;
 	public static long lastTimeUpdate;
 	public static double mspt;
 	final private Minecraft mc = Minecraft.getMinecraft();
@@ -48,7 +46,6 @@ public class UselessMod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		ClientRegistry.registerKeyBinding(reloadAudioEngineKey);
-		ClientRegistry.registerKeyBinding(hideSidebarScoreboard);
 		ClientRegistry.registerKeyBinding(highlightEntities);
 	}
 
@@ -65,20 +62,16 @@ public class UselessMod {
 			this.mc.getSoundHandler().sndManager.reloadSoundSystem();
 			this.debugFeedback();
 		}
-
-		if (hideSidebarScoreboard.isPressed()) {
-			isScoreboardHidden = !isScoreboardHidden;
-		}
 	}
 
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			final EntityPlayerSP p = this.mc.player;
-			if (Configuration.flightInertiaCancellation && p != null && p.capabilities.isFlying) {
-				final GameSettings s = this.mc.gameSettings;
-				if (!(GameSettings.isKeyDown(s.keyBindForward) || GameSettings.isKeyDown(s.keyBindBack) || GameSettings.isKeyDown(s.keyBindLeft) || GameSettings.isKeyDown(s.keyBindRight))) {
-					p.motionX = p.motionZ = 0D;
+			final EntityPlayerSP player = this.mc.player;
+			if (Configuration.flightInertiaCancellation && player != null && player.capabilities.isFlying) {
+				final GameSettings settings = this.mc.gameSettings;
+				if (!(GameSettings.isKeyDown(settings.keyBindForward) || GameSettings.isKeyDown(settings.keyBindBack) || GameSettings.isKeyDown(settings.keyBindLeft) || GameSettings.isKeyDown(settings.keyBindRight))) {
+					player.motionX = player.motionZ = 0D;
 				}
 			}
 		}
@@ -104,10 +97,10 @@ public class UselessMod {
 	}
 
 	private void debugFeedback() {
-		ITextComponent tag = new TextComponentTranslation("debug.prefix");
-		ITextComponent text = new TextComponentTranslation("uselessmod.reload_audio");
+		final ITextComponent tag = new TextComponentTranslation("debug.prefix");
+		final ITextComponent text = new TextComponentTranslation("uselessmod.reload_audio");
 		tag.setStyle(new Style().setColor(TextFormatting.YELLOW).setBold(true));
-		ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
+		final ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
 		this.mc.ingameGUI.getChatGUI().printChatMessage(message);
 	}
 }

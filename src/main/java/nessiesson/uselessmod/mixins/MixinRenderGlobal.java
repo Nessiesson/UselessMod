@@ -36,11 +36,4 @@ public abstract class MixinRenderGlobal {
 			cir.setReturnValue((entityIn instanceof EntityLivingBase || entityIn instanceof EntityMinecart) && (entityIn.ignoreFrustumCheck || camera.isBoundingBoxInFrustum(entityIn.getEntityBoundingBox()) || entityIn.isRidingOrBeingRiddenBy(this.mc.player)));
 		}
 	}
-
-	@Inject(method = "notifyBlockUpdate", at = @At("HEAD"), cancellable = true)
-	private void onNotifyBlockUpdate(World worldIn, BlockPos pos, IBlockState oldState, IBlockState newState, int flags, CallbackInfo ci) {
-		if (newState.getBlock() == Blocks.PISTON_EXTENSION) {
-			ci.cancel();
-		}
-	}
 }

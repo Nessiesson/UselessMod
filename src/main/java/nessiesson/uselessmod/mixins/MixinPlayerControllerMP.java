@@ -16,6 +16,8 @@ public abstract class MixinPlayerControllerMP {
 	@Inject(method = "clickBlock", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;onPlayerDestroyBlock(Lnet/minecraft/util/math/BlockPos;)Z"))
 	private void onInstantMine(BlockPos loc, EnumFacing face, CallbackInfoReturnable<Boolean> cir) {
 		final NetHandlerPlayClient connection = Minecraft.getMinecraft().getConnection();
-		connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, loc, face));
+		if (connection != null) {
+			connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, loc, face));
+		}
 	}
 }

@@ -69,11 +69,6 @@ mixin {
 shadowJar {
 	exclude "dummyThing"
 	exclude "LICENSE.txt"
-
-	dependencies {
-		include(dependency("org.spongepowered:mixin"))
-	}
-
 	classifier = ""
 }
 build.dependsOn(shadowJar)
@@ -81,7 +76,7 @@ build.dependsOn(shadowJar)
 reobf {
 	shadowJar {
 		mappingType = "SEARGE"
-		classpath = sourceSets.main.compileClasspath
+		//classpath = sourceSets.main.compileClasspath
 	}
 }
 

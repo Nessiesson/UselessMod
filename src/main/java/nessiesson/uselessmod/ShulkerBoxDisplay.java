@@ -22,7 +22,7 @@ public class ShulkerBoxDisplay {
 
 	public static void handleShulkerBoxDisplayRenderer(ItemStack stack, int x, int y, Gui gui) {
 		if (stack != null && stack.getItem() instanceof ItemShulkerBox && stack.hasTagCompound() && GuiScreen.isShiftKeyDown()) {
-			NBTTagCompound cmp = getCompoundOrNull(stack);
+			final NBTTagCompound cmp = getCompoundOrNull(stack);
 			if (cmp != null && cmp.hasKey("Items", 9)) {
 				final int texWidth = 172;
 				final int texHeight = 64;
@@ -69,11 +69,6 @@ public class ShulkerBoxDisplay {
 
 	private static NBTTagCompound getCompoundOrNull(ItemStack stack) {
 		final NBTTagCompound compound = stack.getTagCompound();
-		if (compound != null && compound.hasKey("BlockEntityTag")) {
-			return compound.getCompoundTag("BlockEntityTag");
-		} else {
-			return null;
-		}
+		return compound != null && compound.hasKey("BlockEntityTag") ? compound.getCompoundTag("BlockEntityTag") : null;
 	}
-
 }

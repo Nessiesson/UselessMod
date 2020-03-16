@@ -19,15 +19,14 @@ public abstract class MixinBlockSnow extends Block {
 	}
 
 	@Override
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		if (rand.nextInt(10) == 0 && worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos, EnumFacing.UP)) {
-			Material material = worldIn.getBlockState(pos.down(2)).getMaterial();
-
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		if (rand.nextInt(10) == 0 && world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP)) {
+			final Material material = world.getBlockState(pos.down(2)).getMaterial();
 			if (!material.blocksMovement() && !material.isLiquid()) {
 				final double x = pos.getX() + rand.nextDouble();
 				final double y = pos.getY() - 1.05D;
 				final double z = pos.getZ() + rand.nextDouble();
-				worldIn.spawnParticle(EnumParticleTypes.END_ROD, x, y, z, 0D, -0.06D, 0D);
+				world.spawnParticle(EnumParticleTypes.END_ROD, x, y, z, 0D, -0.06D, 0D);
 			}
 		}
 	}

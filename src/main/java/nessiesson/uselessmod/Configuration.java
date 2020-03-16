@@ -15,6 +15,10 @@ public class Configuration {
 	public static boolean showShulkerBoxDisplay = false;
 	public static boolean sortEnchantmentTooltip = false;
 	public static boolean hackerman = false;
+	public static boolean showIdealToolMarker = false;
 	@Config.RangeInt(min = 0)
 	public static int speedyPlace = 4;
+	@Config.SlidingOption
+	@Config.RangeDouble(min = 0D, max = 1D)
+	public static double spectatorMaxSpeed = 0.2;
 }
