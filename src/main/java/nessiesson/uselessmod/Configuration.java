@@ -21,4 +21,5 @@ public class Configuration {
 	@Config.SlidingOption
 	@Config.RangeDouble(min = 0D, max = 1D)
 	public static double spectatorMaxSpeed = 0.2;
+	public static boolean showItemFrameFrame = true;
 }
