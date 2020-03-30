@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,6 +13,8 @@ public abstract class MixinRenderChunkOptifine {
 	@Dynamic
 	@Inject(method = "isPlayerUpdate", at = @At("HEAD"), cancellable = true, remap = false)
 	private void stopDumbBlinking(CallbackInfoReturnable<Boolean> ci) {
-		ci.setReturnValue(true);
+		if (Configuration.lessOptifineBlinkingPistons) {
+			ci.setReturnValue(true);
+		}
 	}
 }
