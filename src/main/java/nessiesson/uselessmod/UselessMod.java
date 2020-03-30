@@ -86,7 +86,7 @@ public class UselessMod {
 
 	@SubscribeEvent
 	public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
-		if (Configuration.hackerman && event.getEntityLiving() instanceof EntityPlayerSP) {
+		if (Configuration.stepAssist && event.getEntityLiving() instanceof EntityPlayerSP) {
 			final EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
 			player.stepHeight = player.isSneaking() ? 0.9F : 1.5F;
 		}
