@@ -17,7 +17,7 @@ public abstract class MixinGuiOverlayDebug {
 	private void tpsDebugText(CallbackInfoReturnable<List<String>> cir) {
 		final double mspt = UselessMod.mspt;
 		final String currentLine = cir.getReturnValue().get(4);
-		cir.getReturnValue().set(4, String.format("%s, mspt: %.1f, tps: %.1f", currentLine, mspt, 1000.0 / mspt));
+		cir.getReturnValue().set(4, String.format("%s, mspt: \u2248%.1f, tps: \u2248%.1f", currentLine, mspt, 1000D / mspt));
 	}
 
 	@Redirect(method = "call", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getVersion()Ljava/lang/String;"))

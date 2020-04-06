@@ -21,6 +21,7 @@
 		"MixinGuiBossOverlay",
 		"MixinGuiChat",
 		"MixinGuiGameOver",
+		"MixinGuiIngame",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",
 		"MixinItemStack",
