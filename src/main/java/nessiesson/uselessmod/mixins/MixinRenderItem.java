@@ -46,7 +46,9 @@ public abstract class MixinRenderItem {
 	}
 
 	private boolean isPerfectNetherPick(ItemStack stack) {
-		return this.isPerfectBasicToolBase(stack) && EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack) == 3;
+		return EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack) == 3
+				&& EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, stack) == 3
+				&& EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0;
 	}
 
 	private boolean isPerfectFortuneAxe(ItemStack stack) {
