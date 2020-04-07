@@ -45,6 +45,10 @@ public abstract class MixinRenderItem {
 		return this.isPerfectSilk(stack) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, stack) == 5;
 	}
 
+	private boolean isPerfectNetherPick(ItemStack stack) {
+		return this.isPerfectBasicToolBase(stack) && EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack) == 3;
+	}
+
 	private boolean isPerfectFortuneAxe(ItemStack stack) {
 		return this.isPerfectFortune(stack) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, stack) == 5;
 	}
@@ -91,6 +95,8 @@ public abstract class MixinRenderItem {
 				marker = "S";
 			} else if (this.isPerfectFortune(stack)) {
 				marker = "F";
+			} else if (this.isPerfectNetherPick(stack)) {
+				marker = "N";
 			}
 		} else if (item instanceof ItemShears && this.isPerfectToolBase(stack)) {
 			marker = "P";
