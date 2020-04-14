@@ -30,11 +30,11 @@ import org.lwjgl.opengl.Display;
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, clientSideOnly = true)
 public class UselessMod {
 	public final static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
-	private final static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
 	private static final float DEFAULT_MOVEMENT_SPEED = 0.6F;
+	private static final Minecraft mc = Minecraft.getMinecraft();
+	private final static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
 	public static long lastTimeUpdate;
 	public static double mspt;
-	final private Minecraft mc = Minecraft.getMinecraft();
 	private String originalTitle;
 
 	@Mod.EventHandler
@@ -60,7 +60,7 @@ public class UselessMod {
 	@SubscribeEvent
 	public void onKeyPressed(InputEvent.KeyInputEvent event) {
 		if (reloadAudioEngineKey.isPressed()) {
-			this.mc.getSoundHandler().sndManager.reloadSoundSystem();
+			mc.getSoundHandler().sndManager.reloadSoundSystem();
 			this.debugFeedback();
 		}
 	}
@@ -68,9 +68,9 @@ public class UselessMod {
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			final EntityPlayerSP player = this.mc.player;
+			final EntityPlayerSP player = mc.player;
 			if (Configuration.flightInertiaCancellation && player != null && player.capabilities.isFlying) {
-				final GameSettings settings = this.mc.gameSettings;
+				final GameSettings settings = mc.gameSettings;
 				if (!(GameSettings.isKeyDown(settings.keyBindForward) || GameSettings.isKeyDown(settings.keyBindBack) || GameSettings.isKeyDown(settings.keyBindLeft) || GameSettings.isKeyDown(settings.keyBindRight))) {
 					player.motionX = player.motionZ = 0D;
 				}
@@ -108,6 +108,6 @@ public class UselessMod {
 		final ITextComponent text = new TextComponentTranslation("uselessmod.reload_audio");
 		tag.setStyle(new Style().setColor(TextFormatting.YELLOW).setBold(true));
 		final ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
-		this.mc.ingameGUI.getChatGUI().printChatMessage(message);
+		mc.ingameGUI.getChatGUI().printChatMessage(message);
 	}
 }

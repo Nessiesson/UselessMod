@@ -4,10 +4,12 @@ import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Pseudo
 @Mixin(RenderChunk.class)
 public abstract class MixinRenderChunkOptifine {
 	@Dynamic
