@@ -29,8 +29,9 @@ import org.lwjgl.opengl.Display;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, clientSideOnly = true)
 public class UselessMod {
-	final public static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
-	final private static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
+	public final static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
+	private final static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
+	private static final float DEFAULT_MOVEMENT_SPEED = 0.6F;
 	public static long lastTimeUpdate;
 	public static double mspt;
 	final private Minecraft mc = Minecraft.getMinecraft();
@@ -86,9 +87,15 @@ public class UselessMod {
 
 	@SubscribeEvent
 	public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
-		if (Configuration.stepAssist && event.getEntityLiving() instanceof EntityPlayerSP) {
-			final EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
-			player.stepHeight = player.isSneaking() ? 0.9F : 1.5F;
+		if (!(event.getEntityLiving() instanceof EntityPlayerSP)) {
+			return;
+		}
+
+		final EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
+		if (Configuration.stepAssist) {
+			player.stepHeight = player.isSneaking() ? DEFAULT_MOVEMENT_SPEED : 1.5F;
+		} else {
+			player.stepHeight = DEFAULT_MOVEMENT_SPEED;
 		}
 	}
 
