@@ -20,6 +20,7 @@
 		"MixinGameSettings",
 		"MixinGuiBossOverlay",
 		"MixinGuiChat",
+		"MixinGuiControls",
 		"MixinGuiGameOver",
 		"MixinGuiIngame",
 		"MixinGuiOverlayDebug",
