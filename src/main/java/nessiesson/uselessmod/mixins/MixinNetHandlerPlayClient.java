@@ -6,6 +6,8 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketBlockAction;
+import net.minecraft.network.play.server.SPacketOpenWindow;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityPiston;
@@ -66,5 +68,15 @@ public abstract class MixinNetHandlerPlayClient {
 		}
 
 		return false;
+	}
+
+	@Inject(method = "handleBlockAction", at = @At("RETURN"))
+	private void onBlockData(SPacketBlockAction packetIn, CallbackInfo ci) {
+		System.out.printf("%s %s %d %d%n", packetIn.getBlockPosition(), packetIn.getBlockType(), packetIn.getData1(), packetIn.getData2());
+	}
+
+	@Inject(method = "handleOpenWindow", at = @At("RETURN"))
+	private void onHandleOpenWindow(SPacketOpenWindow packetIn, CallbackInfo ci) {
+		System.out.printf("%d %s %s %d %d %s%n", packetIn.getWindowId(), packetIn.getGuiId(), packetIn.getWindowTitle(), packetIn.getSlotCount(), packetIn.getEntityId(), packetIn.hasSlots());
 	}
 }
