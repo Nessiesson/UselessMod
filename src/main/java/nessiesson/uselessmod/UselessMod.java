@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +38,7 @@ public class UselessMod {
 	private final static KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
 	public static Map<AxisAlignedBB, Integer> beaconsToRender = new HashMap<>();
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static final float DEFAULT_MOVEMENT_SPEED = 0.6F;
-	private static boolean toggleBeaconArea = false;
+	public static boolean toggleBeaconArea = false;
 	public static long lastTimeUpdate;
 	public static double mspt;
 	private String originalTitle;
@@ -70,6 +70,7 @@ public class UselessMod {
 			mc.getSoundHandler().sndManager.reloadSoundSystem();
 			this.debugFeedback();
 		}
+
 		if (toggleBeaconAreaKey.isPressed()) {
 			toggleBeaconArea = !toggleBeaconArea;
 		}
@@ -82,9 +83,10 @@ public class UselessMod {
 				UselessMod.beaconsToRender.put(axisalignedbb, UselessMod.beaconsToRender.get(axisalignedbb) - 1);
 			}
 		}
+
 		if (event.phase == TickEvent.Phase.END) {
 			final EntityPlayerSP player = mc.player;
-			if (Configuration.flightInertiaCancellation && player != null && player.capabilities.isFlying) {
+			if (Configuration.flightInertiaCancellation && player.capabilities.isFlying) {
 				final GameSettings settings = mc.gameSettings;
 				if (!(GameSettings.isKeyDown(settings.keyBindForward) || GameSettings.isKeyDown(settings.keyBindBack) || GameSettings.isKeyDown(settings.keyBindLeft) || GameSettings.isKeyDown(settings.keyBindRight))) {
 					player.motionX = player.motionZ = 0D;
@@ -107,15 +109,11 @@ public class UselessMod {
 		}
 
 		final EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
-		if (Configuration.stepAssist) {
-			player.stepHeight = player.isSneaking() ? DEFAULT_MOVEMENT_SPEED : 1.5F;
-		} else {
-			player.stepHeight = DEFAULT_MOVEMENT_SPEED;
-		}
+		player.stepHeight = Configuration.stepAssist && !player.isSneaking() ? 1.5F : 0.6F;
 	}
 
 	private void updateTitle() {
-		Display.setTitle(this.originalTitle + " - " + Minecraft.getMinecraft().getSession().getUsername());
+		Display.setTitle(this.originalTitle + " - " + mc.getSession().getUsername());
 	}
 
 	private void debugFeedback() {
@@ -124,8 +122,5 @@ public class UselessMod {
 		tag.setStyle(new Style().setColor(TextFormatting.YELLOW).setBold(true));
 		final ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
 		mc.ingameGUI.getChatGUI().printChatMessage(message);
-	}
-	public static boolean getRenderBeconBox() {
-		return toggleBeaconArea;
 	}
 }

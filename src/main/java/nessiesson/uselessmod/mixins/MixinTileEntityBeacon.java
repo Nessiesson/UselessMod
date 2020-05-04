@@ -19,7 +19,7 @@ public abstract class MixinTileEntityBeacon extends TileEntityLockable {
 
 	@Inject(method = "update", at = @At("HEAD"), cancellable = true)
 	private void onUpdate(CallbackInfo ci) {
-		if (UselessMod.getRenderBeconBox() && this.isComplete && this.levels > 0) {
+		if (UselessMod.toggleBeaconArea && this.isComplete && this.levels > 0) {
 			double radius = this.levels * 10 + 10;
 			int x = this.pos.getX();
 			int y = this.pos.getY();
