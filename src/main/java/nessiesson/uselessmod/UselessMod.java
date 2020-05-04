@@ -91,7 +91,7 @@ public class UselessMod {
 
 		if (event.phase == TickEvent.Phase.END) {
 			final EntityPlayerSP player = mc.player;
-			if (Configuration.flightInertiaCancellation && player.capabilities.isFlying) {
+			if (Configuration.flightInertiaCancellation && player != null && player.capabilities.isFlying) {
 				final GameSettings settings = mc.gameSettings;
 				if (!(GameSettings.isKeyDown(settings.keyBindForward) || GameSettings.isKeyDown(settings.keyBindBack) || GameSettings.isKeyDown(settings.keyBindLeft) || GameSettings.isKeyDown(settings.keyBindRight))) {
 					player.motionX = player.motionZ = 0D;
