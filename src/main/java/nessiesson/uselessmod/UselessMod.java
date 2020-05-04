@@ -5,6 +5,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -26,13 +27,18 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import java.util.HashMap;
+import java.util.Map;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, clientSideOnly = true)
 public class UselessMod {
 	public final static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
-	private static final float DEFAULT_MOVEMENT_SPEED = 0.6F;
-	private static final Minecraft mc = Minecraft.getMinecraft();
 	private final static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
+	private final static KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
+	public static Map<AxisAlignedBB, Integer> beaconsToRender = new HashMap<>();
+	private static final Minecraft mc = Minecraft.getMinecraft();
+	private static final float DEFAULT_MOVEMENT_SPEED = 0.6F;
+	private static boolean toggleBeaconArea = false;
 	public static long lastTimeUpdate;
 	public static double mspt;
 	private String originalTitle;
@@ -47,6 +53,7 @@ public class UselessMod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		ClientRegistry.registerKeyBinding(reloadAudioEngineKey);
+		ClientRegistry.registerKeyBinding(toggleBeaconAreaKey);
 		ClientRegistry.registerKeyBinding(highlightEntities);
 	}
 
@@ -63,10 +70,18 @@ public class UselessMod {
 			mc.getSoundHandler().sndManager.reloadSoundSystem();
 			this.debugFeedback();
 		}
+		if (toggleBeaconAreaKey.isPressed()) {
+			toggleBeaconArea = !toggleBeaconArea;
+		}
 	}
 
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
+		if (mc.world != null) {
+			for (AxisAlignedBB axisalignedbb : UselessMod.beaconsToRender.keySet()) {
+				UselessMod.beaconsToRender.put(axisalignedbb, UselessMod.beaconsToRender.get(axisalignedbb) - 1);
+			}
+		}
 		if (event.phase == TickEvent.Phase.END) {
 			final EntityPlayerSP player = mc.player;
 			if (Configuration.flightInertiaCancellation && player != null && player.capabilities.isFlying) {
@@ -109,5 +124,8 @@ public class UselessMod {
 		tag.setStyle(new Style().setColor(TextFormatting.YELLOW).setBold(true));
 		final ITextComponent message = new TextComponentString("").appendSibling(tag).appendText(" ").appendSibling(text);
 		mc.ingameGUI.getChatGUI().printChatMessage(message);
+	}
+	public static boolean getRenderBeconBox() {
+		return toggleBeaconArea;
 	}
 }
