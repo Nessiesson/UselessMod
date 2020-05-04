@@ -13,10 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Random;
 
 @Mixin(ParticleFirework.Spark.class)
-public abstract class MixinParticleFireWorkDOLSpark extends Particle {
+public abstract class MixinParticleFireWorkSpark extends Particle {
 	private static final Random RNG = new Random();
 
-	protected MixinParticleFireWorkDOLSpark(World world, double x, double y, double z) {
+	protected MixinParticleFireWorkSpark(World world, double x, double y, double z) {
 		super(world, x, y, z);
 	}
 

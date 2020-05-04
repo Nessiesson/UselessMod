@@ -22,8 +22,6 @@ public class Configuration {
 	@Config.RangeDouble(min = 0D, max = 1D)
 	public static double spectatorMaxSpeed = 0.2;
 	public static boolean showItemFrameFrame = true;
-	@Config.Comment("Enabling will decrease client performance when near moving pistons")
-	public static boolean lessOptifineBlinkingPistons = true;
 	@Config.Comment("Enables client-side start of elytra flight by Earthcomputer. May cause you to fall to your death randomly.")
 	public static boolean elytraFix = false;
 	public static boolean showMSPTandTPSinTab = true;
