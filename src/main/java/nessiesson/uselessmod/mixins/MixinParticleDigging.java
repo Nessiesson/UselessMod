@@ -17,8 +17,8 @@ public abstract class MixinParticleDigging extends Particle {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void removeRandomParticleMotion(CallbackInfo ci) {
-		if (Configuration.insaneBlockBreakingParticles) {
-			final double multiplier = 3D;
+		final double multiplier = Configuration.blockBreakingMultiplier;
+		if (Math.abs(multiplier - 1D) < 1E-1D) {
 			this.motionX *= multiplier;
 			this.motionY *= multiplier;
 			this.motionZ *= multiplier;
