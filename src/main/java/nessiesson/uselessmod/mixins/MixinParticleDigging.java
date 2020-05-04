@@ -22,7 +22,7 @@ public abstract class MixinParticleDigging extends Particle {
 			this.motionX *= multiplier;
 			this.motionY *= multiplier;
 			this.motionZ *= multiplier;
-			this.particleMaxAge *= 2;
+			this.particleMaxAge *= 1 + multiplier * 2D / 3D;
 			this.particleGravity = 0F;
 		}
 	}
