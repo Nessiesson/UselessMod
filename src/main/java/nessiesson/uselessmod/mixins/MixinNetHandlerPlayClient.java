@@ -6,14 +6,16 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketBlockAction;
+import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.network.play.server.SPacketOpenWindow;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
+import net.minecraft.network.play.server.SPacketWindowItems;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityPiston;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -23,6 +25,8 @@ import java.util.Iterator;
 
 @Mixin(NetHandlerPlayClient.class)
 public abstract class MixinNetHandlerPlayClient {
+	@Unique
+	private static final String START_OF_PACKET = "Lnet/minecraft/network/PacketThreadUtil;checkThreadAndEnqueue(Lnet/minecraft/network/Packet;Lnet/minecraft/network/INetHandler;Lnet/minecraft/util/IThreadListener;)V";
 	@Shadow
 	private WorldClient world;
 
@@ -33,7 +37,7 @@ public abstract class MixinNetHandlerPlayClient {
 		UselessMod.lastTimeUpdate = currentTime;
 
 		if (dt > 0L) {
-			UselessMod.mspt = Math.max(50.0, dt * 5e-8);
+			UselessMod.mspt = Math.max(50D, dt * 5E-8D);
 		}
 	}
 
@@ -70,13 +74,20 @@ public abstract class MixinNetHandlerPlayClient {
 		return false;
 	}
 
-	@Inject(method = "handleBlockAction", at = @At("RETURN"))
-	private void onBlockData(SPacketBlockAction packetIn, CallbackInfo ci) {
-		System.out.printf("%s %s %d %d%n", packetIn.getBlockPosition(), packetIn.getBlockType(), packetIn.getData1(), packetIn.getData2());
+	@Inject(method = "handleOpenWindow", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER), cancellable = true)
+	private void onHandleOpenWindow(SPacketOpenWindow packet, CallbackInfo ci) {
+		UselessMod.spy.onOpenWindow(packet.getWindowId(), packet.getSlotCount());
 	}
 
-	@Inject(method = "handleOpenWindow", at = @At("RETURN"))
-	private void onHandleOpenWindow(SPacketOpenWindow packetIn, CallbackInfo ci) {
-		System.out.printf("%d %s %s %d %d %s%n", packetIn.getWindowId(), packetIn.getGuiId(), packetIn.getWindowTitle(), packetIn.getSlotCount(), packetIn.getEntityId(), packetIn.hasSlots());
+	@Inject(method = "handleWindowItems", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER))
+	private void onHandleWindowItems(SPacketWindowItems packet, CallbackInfo ci) {
+		UselessMod.spy.onGetContent(packet.getWindowId(), packet.getItemStacks());
+	}
+
+	@Inject(method = "handleChat", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER), cancellable = true)
+	private void onHandleChat(SPacketChat packet, CallbackInfo ci) {
+		if (!packet.isSystem()) {
+			UselessMod.spy.onChatReceived(packet.getChatComponent());
+		}
 	}
 }
