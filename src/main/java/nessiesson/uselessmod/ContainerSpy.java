@@ -57,7 +57,6 @@ public class ContainerSpy {
 			if (player.getDistanceSq(pos) < rangeSq && block instanceof BlockChest) {
 				this.fifo.add(pos);
 				player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0F, 0F, 0F));
-				player.connection.sendPacket(new CPacketCloseWindow());
 			}
 		}
 
@@ -77,6 +76,11 @@ public class ContainerSpy {
 
 	// https://wiki.vg/index.php?title=Protocol&oldid=14204#Open_Window
 	public void onGetContent(final int windowId, final List<ItemStack> stacks) {
+		// id 0 is player inventory
+		if(windowId == 0) {
+			return;
+		}
+
 		System.out.println(stacks);
 	}
 
@@ -105,6 +109,7 @@ public class ContainerSpy {
 	}
 
 	private void sendStop() {
+		this.mc.player.connection.sendPacket(new CPacketCloseWindow());
 		this.mc.player.connection.sendPacket(new CPacketChatMessage("/help " + this.stopId));
 	}
 
