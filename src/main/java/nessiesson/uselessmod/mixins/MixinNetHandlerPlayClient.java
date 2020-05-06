@@ -76,7 +76,9 @@ public abstract class MixinNetHandlerPlayClient {
 
 	@Inject(method = "handleOpenWindow", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER), cancellable = true)
 	private void onHandleOpenWindow(SPacketOpenWindow packet, CallbackInfo ci) {
-		UselessMod.spy.onOpenWindow(packet.getWindowId(), packet.getSlotCount());
+		if (UselessMod.spy.onOpenWindow(packet.getWindowId(), packet.getSlotCount())) {
+			ci.cancel();
+		}
 	}
 
 	@Inject(method = "handleWindowItems", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER))
@@ -86,8 +88,8 @@ public abstract class MixinNetHandlerPlayClient {
 
 	@Inject(method = "handleChat", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER), cancellable = true)
 	private void onHandleChat(SPacketChat packet, CallbackInfo ci) {
-		if (!packet.isSystem()) {
-			UselessMod.spy.onChatReceived(packet.getChatComponent());
+		if (packet.isSystem() && UselessMod.spy.onChatReceived(packet.getChatComponent())) {
+			ci.cancel();
 		}
 	}
 }

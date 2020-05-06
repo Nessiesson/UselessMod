@@ -6,13 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketChatMessage;
-import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.HashMap;
@@ -45,32 +43,34 @@ public class ContainerSpy {
 		final double y = player.posY;
 		final double z = player.posZ;
 		final float range = this.mc.playerController.getBlockReachDistance();
-		final float rangeSq = this.mc.playerController.getBlockReachDistance();
+		final float rangeSq = range * range;
 		final BlockPos from = new BlockPos(x - range, y - range, z - range);
 		final BlockPos to = new BlockPos(x + range, y + range, z + range);
 		this.sendStartPacket();
 		for (final BlockPos pos : BlockPos.getAllInBox(from, to)) {
 			final Block block = this.mc.world.getBlockState(pos).getBlock();
-			System.out.println(block + " " + player.getDistanceSq(pos) + " " + rangeSq);
 			if (player.getDistanceSq(pos) < rangeSq && block instanceof BlockChest) {
 				player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0F, 0F, 0F));
-				player.connection.sendPacket(new CPacketCloseWindow());
 			}
 		}
 
 		this.sendStopPacket();
 	}
 
-	public void onOpenWindow(final int windowId, final int slotCount) {
-		System.out.println(windowId + " " + slotCount);
+	public boolean onOpenWindow(final int windowId, final int slotCount) {
+		return false;
 	}
 
 	public void onGetContent(final int windowId, final List<ItemStack> stacks) {
-		System.out.println(windowId + " " + stacks);
 	}
 
-	public void onChatReceived(final ITextComponent component) {
-		System.out.println((component instanceof TextComponentString) + " " + (component instanceof TextComponentTranslation));
+	public boolean onChatReceived(final ITextComponent componentIn) {
+		if (!(componentIn instanceof TextComponentTranslation)) {
+			return false;
+		}
+
+		final TextComponentTranslation component = (TextComponentTranslation) componentIn;
+		return component.getKey().equals("commands.generic.num.tooBig") && (component.getFormatArgs()[0].equals(this.startId) || component.getFormatArgs()[0].equals(this.stopId));
 	}
 
 	private void sendStartPacket() {
