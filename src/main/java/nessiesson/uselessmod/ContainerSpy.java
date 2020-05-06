@@ -20,20 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// 1. Query block and register position.
-// 2. Wait for Open Window packet and Block Action packets (They are sent in that order).
-// 3. Somehow try to figure out how to determine which window belongs to which block action.
-
-// ALTERNATIVELY:
-// 1. Query block and register position, type, and order.
-// 2. Keep track of stuff...
-// 3. Assign position in order of blocks successfully(?) opened.
-
-// ALTERNATIVELY:
-// 1. Query block and register position, type, and order.
-// 2. Use some info packet sent from client to server
-// 3. `/help NUMBER`
-
 public class ContainerSpy {
 	private final int startId = 2137433547;
 	private final int stopId = startId + 1;
@@ -68,20 +54,26 @@ public class ContainerSpy {
 			return false;
 		}
 
-		final BlockPos current = this.fifo.get(0);
+		final BlockPos current = this.fifo.remove(0);
 		this.map.put(current, new SimpleContainer(windowId, slotCount));
-		this.fifo.remove(0);
 		return true;
 	}
 
 	// https://wiki.vg/index.php?title=Protocol&oldid=14204#Open_Window
 	public void onGetContent(final int windowId, final List<ItemStack> stacks) {
 		// id 0 is player inventory
-		if(windowId == 0) {
+		if (windowId == 0) {
 			return;
 		}
 
-		System.out.println(stacks);
+		for (final Map.Entry<BlockPos, SimpleContainer> entry : this.map.entrySet()) {
+			final SimpleContainer value = entry.getValue();
+			if (value.windowId == windowId) {
+				// TODO: handle stuff other than single chests.
+				value.inv = stacks.subList(0, 27);
+				System.out.println(value.inv);
+			}
+		}
 	}
 
 	public boolean onChatReceived(final ITextComponent componentIn) {
@@ -114,8 +106,8 @@ public class ContainerSpy {
 	}
 
 	private static class SimpleContainer {
-		private int windowId;
-		private List<ItemStack> inv;
+		public int windowId;
+		public List<ItemStack> inv;
 
 		public SimpleContainer(final int id, final int slotCount) {
 			this.windowId = id;

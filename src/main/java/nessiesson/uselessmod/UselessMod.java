@@ -34,15 +34,16 @@ import java.util.Map;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, clientSideOnly = true)
 public class UselessMod {
-	public final static KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
+	public static final KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
 	public static Map<AxisAlignedBB, Integer> beaconsToRender = new HashMap<>();
 	public static boolean toggleBeaconArea = false;
 	public static long lastTimeUpdate;
 	public static ContainerSpy spy;
 	public static double mspt;
 
-	private final static KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
-	private final static KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
+	private static final KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
+	private static final KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
+	private static final KeyBinding spyKey = new KeyBinding("key.uselessmod.spy", KeyConflictContext.IN_GAME, Keyboard.KEY_Y, Reference.NAME);
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private String originalTitle;
 
@@ -58,7 +59,7 @@ public class UselessMod {
 		ClientRegistry.registerKeyBinding(reloadAudioEngineKey);
 		ClientRegistry.registerKeyBinding(toggleBeaconAreaKey);
 		ClientRegistry.registerKeyBinding(highlightEntities);
-		ClientCommandHandler.instance.registerCommand(new CommandSpy());
+		ClientRegistry.registerKeyBinding(spyKey);
 		spy = new ContainerSpy();
 	}
 
@@ -78,6 +79,10 @@ public class UselessMod {
 
 		if (toggleBeaconAreaKey.isPressed()) {
 			toggleBeaconArea = !toggleBeaconArea;
+		}
+
+		if(spyKey.isPressed()) {
+			spy.startFindingInventories();
 		}
 	}
 
