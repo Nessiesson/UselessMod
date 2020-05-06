@@ -6,13 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketChatMessage;
+import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,8 @@ public class ContainerSpy {
 	private final int stopId = startId + 1;
 	private final Minecraft mc = Minecraft.getMinecraft();
 	private final Map<BlockPos, SimpleContainer> map = new HashMap<>();
+	private final List<BlockPos> fifo = new ArrayList<>();
+	private boolean isRunning = false;
 
 	public void startFindingInventories() {
 		final EntityPlayerSP player = this.mc.player;
@@ -46,22 +51,33 @@ public class ContainerSpy {
 		final float rangeSq = range * range;
 		final BlockPos from = new BlockPos(x - range, y - range, z - range);
 		final BlockPos to = new BlockPos(x + range, y + range, z + range);
-		this.sendStartPacket();
+		this.sendStart();
 		for (final BlockPos pos : BlockPos.getAllInBox(from, to)) {
 			final Block block = this.mc.world.getBlockState(pos).getBlock();
 			if (player.getDistanceSq(pos) < rangeSq && block instanceof BlockChest) {
+				this.fifo.add(pos);
 				player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0F, 0F, 0F));
+				player.connection.sendPacket(new CPacketCloseWindow());
 			}
 		}
 
-		this.sendStopPacket();
+		this.sendStop();
 	}
 
 	public boolean onOpenWindow(final int windowId, final int slotCount) {
-		return false;
+		if (!this.isRunning) {
+			return false;
+		}
+
+		final BlockPos current = this.fifo.get(0);
+		this.map.put(current, new SimpleContainer(windowId, slotCount));
+		this.fifo.remove(0);
+		return true;
 	}
 
+	// https://wiki.vg/index.php?title=Protocol&oldid=14204#Open_Window
 	public void onGetContent(final int windowId, final List<ItemStack> stacks) {
+		System.out.println(stacks);
 	}
 
 	public boolean onChatReceived(final ITextComponent componentIn) {
@@ -70,19 +86,35 @@ public class ContainerSpy {
 		}
 
 		final TextComponentTranslation component = (TextComponentTranslation) componentIn;
-		return component.getKey().equals("commands.generic.num.tooBig") && (component.getFormatArgs()[0].equals(this.startId) || component.getFormatArgs()[0].equals(this.stopId));
+		if (!component.getKey().equals("commands.generic.num.tooBig")) {
+			return false;
+		}
+
+		final int returnedId = Integer.parseInt(String.valueOf(component.getFormatArgs()[0]));
+		if (returnedId == this.startId) {
+			this.isRunning = true;
+		} else if (returnedId == this.stopId) {
+			this.isRunning = false;
+		}
+
+		return returnedId == this.startId || returnedId == this.stopId;
 	}
 
-	private void sendStartPacket() {
+	private void sendStart() {
 		this.mc.player.connection.sendPacket(new CPacketChatMessage("/help " + this.startId));
 	}
 
-	private void sendStopPacket() {
+	private void sendStop() {
 		this.mc.player.connection.sendPacket(new CPacketChatMessage("/help " + this.stopId));
 	}
 
 	private static class SimpleContainer {
 		private int windowId;
 		private List<ItemStack> inv;
+
+		public SimpleContainer(final int id, final int slotCount) {
+			this.windowId = id;
+			this.inv = NonNullList.withSize(slotCount, ItemStack.EMPTY);
+		}
 	}
 }
