@@ -45,7 +45,6 @@ public class ContainerSpy {
 				player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, EnumFacing.DOWN, EnumHand.MAIN_HAND, 0F, 0F, 0F));
 			}
 		}
-
 		this.sendStop();
 	}
 
@@ -71,9 +70,17 @@ public class ContainerSpy {
 			if (value.windowId == windowId) {
 				// TODO: handle stuff other than single chests.
 				value.inv = stacks.subList(0, 27);
-				System.out.println(value.inv);
+				//System.out.println(entry.getKey().toString() + ": " + value.inv.toString());
 			}
 		}
+	}
+
+	public Map<BlockPos, SimpleContainer> getChests() {
+		return this.map;
+	}
+
+	public void resetChests() {
+		this.map.clear();
 	}
 
 	public boolean onChatReceived(final ITextComponent componentIn) {
@@ -105,13 +112,23 @@ public class ContainerSpy {
 		this.mc.player.connection.sendPacket(new CPacketChatMessage("/help " + this.stopId));
 	}
 
-	private static class SimpleContainer {
+	public class SimpleContainer {
 		public int windowId;
 		public List<ItemStack> inv;
 
 		public SimpleContainer(final int id, final int slotCount) {
 			this.windowId = id;
 			this.inv = NonNullList.withSize(slotCount, ItemStack.EMPTY);
+		}
+
+		public int countUsedSlots () {
+			int i = 0;
+			for (ItemStack stack : this.inv) {
+				if (!stack.isEmpty()) {
+					i++;
+				}
+			}
+			return i;
 		}
 	}
 }

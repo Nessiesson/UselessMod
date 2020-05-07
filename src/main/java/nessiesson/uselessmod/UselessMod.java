@@ -11,7 +11,6 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -82,7 +81,11 @@ public class UselessMod {
 		}
 
 		if(spyKey.isPressed()) {
-			spy.startFindingInventories();
+			if (mc.player.isSneaking()) {
+				spy.resetChests();
+			} else {
+				spy.startFindingInventories();
+			}
 		}
 	}
 
@@ -91,6 +94,9 @@ public class UselessMod {
 		if (mc.world != null) {
 			for (AxisAlignedBB axisalignedbb : UselessMod.beaconsToRender.keySet()) {
 				UselessMod.beaconsToRender.put(axisalignedbb, UselessMod.beaconsToRender.get(axisalignedbb) - 1);
+			}
+			if (!mc.player.isSneaking() && spyKey.isKeyDown() && mc.world.getTotalWorldTime() % 10 == 0) {
+				spy.startFindingInventories();
 			}
 		}
 
