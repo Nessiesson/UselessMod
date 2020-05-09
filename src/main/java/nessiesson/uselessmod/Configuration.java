@@ -28,4 +28,5 @@ public class Configuration {
 	public static boolean elytraFix = false;
 	public static boolean showMSPTandTPSinTab = true;
 	public static boolean tasteTheRainbow = false;
+	public static boolean alwaysShowPing = false;
 }
