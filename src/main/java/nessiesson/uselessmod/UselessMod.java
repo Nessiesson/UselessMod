@@ -11,6 +11,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,6 +45,7 @@ public class UselessMod {
 	private static final KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
 	private static final KeyBinding spyKey = new KeyBinding("key.uselessmod.spy", KeyConflictContext.IN_GAME, Keyboard.KEY_Y, Reference.NAME);
 	private static final Minecraft mc = Minecraft.getMinecraft();
+	private CompactChat compactChat;
 	private String originalTitle;
 
 	@Mod.EventHandler
@@ -59,6 +61,7 @@ public class UselessMod {
 		ClientRegistry.registerKeyBinding(toggleBeaconAreaKey);
 		ClientRegistry.registerKeyBinding(highlightEntities);
 		ClientRegistry.registerKeyBinding(spyKey);
+		this.compactChat = new CompactChat();
 		spy = new ContainerSpy();
 	}
 
@@ -126,6 +129,13 @@ public class UselessMod {
 
 		final EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
 		player.stepHeight = Configuration.stepAssist && !player.isSneaking() ? 1.5F : 0.6F;
+	}
+
+	@SubscribeEvent
+	public void chat(final ClientChatReceivedEvent event) {
+		if (this.compactChat.onChat(event.getMessage())) {
+			event.setCanceled(true);
+		}
 	}
 
 	private void updateTitle() {
