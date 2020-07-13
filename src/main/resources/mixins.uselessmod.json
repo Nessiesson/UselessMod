@@ -23,6 +23,7 @@
 		"MixinGuiControls",
 		"MixinGuiGameOver",
 		"MixinGuiIngame",
+		"MixinGuiMultiplayer",
 		"MixinGuiNewChat",
 		"MixinGuiOverlayDebug",
 		"MixinGuiScreen",

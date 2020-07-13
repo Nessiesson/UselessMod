@@ -16,7 +16,7 @@ apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
 
-version = "1.3.4"
+version = "1.3.5"
 def modName = "UselessMod".toString()
 def modId = modName.toLowerCase()
 group = "nessiesson.${modId}"

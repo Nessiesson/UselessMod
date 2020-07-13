@@ -29,4 +29,5 @@ public class Configuration {
 	public static boolean showMSPTandTPSinTab = true;
 	public static boolean tasteTheRainbow = false;
 	public static boolean alwaysShowPing = false;
+	public static boolean dynamicServerListUpdates = false;
 }

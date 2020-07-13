@@ -1,3 +1,4 @@
+
 package nessiesson.uselessmod.mixins;
 
 import nessiesson.uselessmod.Configuration;
