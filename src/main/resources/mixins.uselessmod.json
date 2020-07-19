@@ -31,6 +31,8 @@
 		"MixinMinecraft",
 		"MixinNetHandlerPlayClient",
 		"MixinNetworkManager5",
+		"MixinNetworkManager",
+		"MixinPacketThreadUtil",
 		"MixinParticleDigging",
 		"MixinParticleFireWorkSpark",
 		"MixinParticleManager",

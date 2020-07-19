@@ -39,6 +39,10 @@ public class UselessMod {
 	public static long lastTimeUpdate;
 	public static ContainerSpy spy;
 	public static double mspt;
+	public static int sendPacketsThisTick = 0;
+	public static int[] sendPackets = new int[20];
+	public static int receivedPacketsThisTick = 0;
+	public static int[] receivedPackets = new int[20];
 
 	private static final KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
 	private static final KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
@@ -98,6 +102,16 @@ public class UselessMod {
 			if (!mc.player.isSneaking() && spyKey.isKeyDown() && mc.world.getTotalWorldTime() % 10 == 0) {
 				spy.startFindingInventories();
 			}
+			for(int i = sendPackets.length-1; i > 0; --i) {
+				sendPackets[i] = sendPackets[i-1];
+			}
+			sendPackets[0] = sendPacketsThisTick;
+			for(int i = receivedPackets.length-1; i > 0; --i) {
+				receivedPackets[i] = receivedPackets[i-1];
+			}
+			receivedPackets[0] = receivedPacketsThisTick;
+			sendPacketsThisTick = 0;
+			receivedPacketsThisTick = 0;
 		}
 
 		if (event.phase == TickEvent.Phase.END) {
