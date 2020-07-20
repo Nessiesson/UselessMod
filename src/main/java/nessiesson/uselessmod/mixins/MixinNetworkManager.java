@@ -1,4 +1,5 @@
 package nessiesson.uselessmod.mixins;
+
 import nessiesson.uselessmod.UselessMod;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;

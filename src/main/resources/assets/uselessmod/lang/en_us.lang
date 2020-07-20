@@ -3,3 +3,4 @@ key.uselessmod.toggle_scoreboard=Hide sidebar scoreboard
 key.uselessmod.toggle_beacon_area=Toggle to show beacon area of effect
 key.uselessmod.highlight_entities=Highlight Entities (Spectators)
 uselessmod.reload_audio=Reloaded sound engine
+menu.relog=Relog
