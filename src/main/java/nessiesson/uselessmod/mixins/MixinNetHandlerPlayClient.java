@@ -96,15 +96,19 @@ public abstract class MixinNetHandlerPlayClient {
 		}
 	}
 
-	@Inject(method = "handleJoinGame", at = @At(value = "INVOKE", target = START_OF_PACKET, shift = At.Shift.AFTER), cancellable = true)
-	private void onHandleChat(SPacketJoinGame packetIn, CallbackInfo ci) {
+	@Inject(method = "handleJoinGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;sendPacket(Lnet/minecraft/network/Packet;)V"), cancellable = true)
+	private void addChatHistory(SPacketJoinGame packetIn, CallbackInfo ci) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (UselessMod.tabCompleteHistory.containsKey(mc.getCurrentServerData().serverIP)) {
-			for (String message : UselessMod.tabCompleteHistory.get(mc.getCurrentServerData().serverIP))
+		String currentServer = "SINGLEPLAYER";
+		if (mc.getCurrentServerData() != null) {
+			currentServer = mc.getCurrentServerData().serverIP;
+		}
+		if (UselessMod.tabCompleteHistory.containsKey(currentServer)) {
+			for (String message : UselessMod.tabCompleteHistory.get(currentServer))
 				mc.ingameGUI.getChatGUI().addToSentMessages(message);
 		}
-		if (UselessMod.chatHistory.containsKey(mc.getCurrentServerData().serverIP)) {
-			List<ChatLine> history = UselessMod.chatHistory.get(mc.getCurrentServerData().serverIP);
+		if (UselessMod.chatHistory.containsKey(currentServer)) {
+			List<ChatLine> history = UselessMod.chatHistory.get(currentServer);
 			Collections.reverse(history);
 			for (ChatLine message : history)
 				mc.ingameGUI.getChatGUI().printChatMessage(message.getChatComponent());

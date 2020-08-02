@@ -29,8 +29,12 @@ public abstract class MixinGuiIngame  extends GuiScreen {
 	}
 	@Inject(method = "actionPerformed", at = @At("INVOKE"))
 	public void saveChat(GuiButton button, CallbackInfo ci){
-		UselessMod.tabCompleteHistory.put(currentServer.serverIP, new ArrayList<> (this.mc.ingameGUI.getChatGUI().getSentMessages()));
-		UselessMod.chatHistory.put(currentServer.serverIP, new ArrayList<> (this.mc.ingameGUI.getChatGUI().chatLines));
+		String currentServer = "SINGLEPLAYER";
+		if (this.currentServer != null) {
+			currentServer = this.currentServer.serverIP;
+		}
+		UselessMod.tabCompleteHistory.put(currentServer, new ArrayList<>(this.mc.ingameGUI.getChatGUI().getSentMessages()));
+		UselessMod.chatHistory.put(currentServer, new ArrayList<>(this.mc.ingameGUI.getChatGUI().chatLines));
 	}
 	@Inject(method = "actionPerformed", at = @At("RETURN"))
 	public void handleRelogButton(GuiButton button, CallbackInfo ci){
