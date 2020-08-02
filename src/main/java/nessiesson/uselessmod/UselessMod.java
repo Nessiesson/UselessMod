@@ -2,6 +2,7 @@ package nessiesson.uselessmod;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -29,12 +30,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, clientSideOnly = true)
 public class UselessMod {
 	public static final KeyBinding highlightEntities = new KeyBinding("key.uselessmod.highlight_entities", KeyConflictContext.IN_GAME, Keyboard.KEY_C, Reference.NAME);
 	public static Map<AxisAlignedBB, Integer> beaconsToRender = new HashMap<>();
+	public static Map<String, List<ChatLine>> chatHistory = new HashMap<>();
+	public static Map<String, List<String>> tabCompleteHistory = new HashMap<>();
 	public static boolean toggleBeaconArea = false;
 	public static long lastTimeUpdate;
 	public static ContainerSpy spy;
