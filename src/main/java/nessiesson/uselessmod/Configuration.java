@@ -30,4 +30,6 @@ public class Configuration {
 	public static boolean tasteTheRainbow = false;
 	public static boolean alwaysShowPing = false;
 	public static boolean dynamicServerListUpdates = false;
+	@Config.RangeInt(min = 0)
+	public static int reconnectTimer = 10;
 }

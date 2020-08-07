@@ -21,6 +21,7 @@
 		"MixinGuiBossOverlay",
 		"MixinGuiChat",
 		"MixinGuiControls",
+		"MixinGuiDisconnected",
 		"MixinGuiGameOver",
 		"MixinGuiIngame",
 		"MixinGuiMultiplayer",

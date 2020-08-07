@@ -2,8 +2,10 @@
 package nessiesson.uselessmod.mixins;
 
 import nessiesson.uselessmod.Configuration;
+import nessiesson.uselessmod.UselessMod;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.ServerSelectionList;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.ServerPinger;
 import org.spongepowered.asm.mixin.Final;
@@ -44,5 +46,10 @@ public abstract class MixinGuiMultiplayer {
 				this.serverListSelector.updateOnlineServers(this.savedServerList);
 			}
 		}
+	}
+
+	@Inject(method = "connectToServer", at = @At(value = "HEAD"))
+	private void updateServerData(ServerData server, CallbackInfo ci) {
+		UselessMod.currentServer = server;
 	}
 }

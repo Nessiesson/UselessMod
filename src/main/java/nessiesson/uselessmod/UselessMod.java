@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ChatLine;
 import net.minecraft.client.gui.GuiMultiplayer;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -47,6 +48,8 @@ public class UselessMod {
 	public static int[] sendPackets = new int[20];
 	public static int receivedPacketsThisTick = 0;
 	public static int[] receivedPackets = new int[20];
+	public static ServerData currentServer;
+	public static long tickCounter = 0;
 
 	private static final KeyBinding reloadAudioEngineKey = new KeyBinding("key.uselessmod.reload_audio", KeyConflictContext.IN_GAME, Keyboard.KEY_B, Reference.NAME);
 	private static final KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
@@ -99,7 +102,12 @@ public class UselessMod {
 
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
+		this.tickCounter++;
 		if (mc.world != null) {
+			if (!this.mc.isIntegratedServerRunning()) {
+				UselessMod.currentServer = this.mc.getCurrentServerData();
+			}
+
 			for (AxisAlignedBB axisalignedbb : UselessMod.beaconsToRender.keySet()) {
 				UselessMod.beaconsToRender.put(axisalignedbb, UselessMod.beaconsToRender.get(axisalignedbb) - 1);
 			}
