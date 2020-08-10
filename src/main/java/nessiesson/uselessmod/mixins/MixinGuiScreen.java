@@ -1,6 +1,7 @@
 package nessiesson.uselessmod.mixins;
 
 import com.google.common.base.Splitter;
+import nessiesson.uselessmod.Configuration;
 import nessiesson.uselessmod.DesktopApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -42,6 +43,13 @@ public abstract class MixinGuiScreen {
 	public void sendChatMessage(String msg) {
 		for (String message : Splitter.fixedLength(256).split(msg)) {
 			this.sendChatMessage(message, true);
+		}
+	}
+
+	@Inject(method = "drawWorldBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawGradientRect(IIIIII)V"), cancellable = true)
+	private void onDrawBackground(int tint, CallbackInfo ci) {
+		if (!Configuration.showGuiBackGround) {
+			ci.cancel();
 		}
 	}
 }

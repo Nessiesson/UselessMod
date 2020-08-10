@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.gui.spectator.ISpectatorMenuObject;
 import net.minecraft.client.gui.spectator.ISpectatorMenuRecipient;
 import net.minecraft.client.gui.spectator.SpectatorMenu;
@@ -16,6 +17,8 @@ public abstract class MixinSpectatorMenu {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void onlyShowPlayers(ISpectatorMenuRecipient menu, CallbackInfo ci) {
-		this.getItem(0).selectItem((SpectatorMenu) (Object) this);
+		if (!Configuration.showSpectatorTeamMenu) {
+			this.getItem(0).selectItem((SpectatorMenu) (Object) this);
+		}
 	}
 }

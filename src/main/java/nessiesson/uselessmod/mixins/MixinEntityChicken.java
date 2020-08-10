@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.world.World;
@@ -16,6 +17,8 @@ public abstract class MixinEntityChicken extends EntityAnimal {
 
 	@Inject(method = "onLivingUpdate", at = @At("RETURN"))
 	private void derpyChicken(CallbackInfo ci) {
-		this.rotationPitch = -90F;
+		if (Configuration.derpyChicken) {
+			this.rotationPitch = -90F;
+		}
 	}
 }

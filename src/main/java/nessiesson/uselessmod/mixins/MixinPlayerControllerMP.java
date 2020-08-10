@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -11,7 +12,9 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerControllerMP.class)
@@ -29,11 +32,16 @@ public abstract class MixinPlayerControllerMP {
 
 	@Inject(method = "clickBlock", at = @At(value = "INVOKE", target = uselessmodOnInstantMine, shift = At.Shift.AFTER))
 	private void postInstantMine(BlockPos pos, EnumFacing face, CallbackInfoReturnable<Boolean> cir) {
-		if (this.uselessmodBlockHardness > 0F) {
+		if (Configuration.miningGhostBlockFix && this.uselessmodBlockHardness > 0F) {
 			final NetHandlerPlayClient connection = Minecraft.getMinecraft().getConnection();
 			if (connection != null) {
 				connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, face, EnumHand.MAIN_HAND, 0F, 0F, 0F));
 			}
 		}
+	}
+
+	@ModifyConstant(method = "onPlayerDamageBlock", constant = @Constant(intValue = 5))
+	private int postBlockMine(int blockHitDelay) {
+		return Configuration.clickBlockMining ? 0 : 5;
 	}
 }

@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinBlock {
 	@Inject(method = "getOffset", at = @At("HEAD"), cancellable = true)
 	private void onGetOffset(IBlockState state, IBlockAccess worldIn, BlockPos pos, CallbackInfoReturnable<Vec3d> cir) {
-		cir.setReturnValue(Vec3d.ZERO);
+		if (Configuration.showCenteredPlants) {
+			cir.setReturnValue(Vec3d.ZERO);
+		}
 	}
 }

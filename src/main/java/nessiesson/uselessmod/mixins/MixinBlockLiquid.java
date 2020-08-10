@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -14,6 +15,6 @@ public abstract class MixinBlockLiquid extends Block {
 
 	@Override
 	public boolean isTranslucent(IBlockState state) {
-		return true;
+		return Configuration.showSmoothWaterLighting || super.isTranslucent(state);
 	}
 }

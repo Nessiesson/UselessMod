@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import nessiesson.uselessmod.UselessMod;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,9 @@ import net.minecraft.network.play.server.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityPiston;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,6 +36,32 @@ public abstract class MixinNetHandlerPlayClient {
 	private WorldClient world;
 
 	@Shadow private Minecraft client;
+
+	@Inject(method = "handleCombatEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V"))
+	private void sendDeathLocation(SPacketCombatEvent packetIn, CallbackInfo ci) {
+		if (Configuration.respawnOnDeath) {
+			Minecraft.getMinecraft().player.respawnPlayer();
+		}
+
+		if (Configuration.deathLocation) {
+			final Minecraft mc = Minecraft.getMinecraft();
+			final BlockPos pos = mc.player.getPosition();
+			final String formatted = String.format("You died @ %d %d %d", pos.getX(), pos.getY(), pos.getZ());
+			final ITextComponent message = new TextComponentString(formatted);
+			message.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, formatted));
+			mc.ingameGUI.getChatGUI().printChatMessage(message);
+		}
+	}
+
+	@Redirect(method = "handleTimeUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/play/server/SPacketTimeUpdate;getWorldTime()J"))
+	private long alwaysDay(SPacketTimeUpdate packet) {
+		final long time = packet.getWorldTime();
+		if (Configuration.alwaysDay) {
+			return time >= 0 ? -(time - time % 24000L + 6000L) : time;
+		}
+
+		return time;
+	}
 
 	@Inject(method = "handleTimeUpdate", at = @At("RETURN"))
 	private void onTimeUpdate(SPacketTimeUpdate packetIn, CallbackInfo ci) {

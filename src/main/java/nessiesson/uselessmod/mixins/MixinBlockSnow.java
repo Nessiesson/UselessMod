@@ -1,5 +1,6 @@
 package nessiesson.uselessmod.mixins;
 
+import nessiesson.uselessmod.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.Material;
@@ -20,6 +21,10 @@ public abstract class MixinBlockSnow extends Block {
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		if (!Configuration.showSnowDripParticles) {
+			return;
+		}
+
 		if (rand.nextInt(10) == 0 && world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP)) {
 			final Material material = world.getBlockState(pos.down(2)).getMaterial();
 			if (!material.blocksMovement() && !material.isLiquid()) {

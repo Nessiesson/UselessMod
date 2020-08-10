@@ -25,7 +25,7 @@ public abstract class MixinItemStack {
 
 	@Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z", remap = false))
 	private boolean noAttributes(Multimap<String, AttributeModifier> map) {
-		return map.isEmpty() || !Minecraft.getMinecraft().gameSettings.advancedItemTooltips;
+		return !Configuration.showItemAttributes || map.isEmpty() || !Minecraft.getMinecraft().gameSettings.advancedItemTooltips;
 	}
 
 	@Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getEnchantmentTagList()Lnet/minecraft/nbt/NBTTagList;"))

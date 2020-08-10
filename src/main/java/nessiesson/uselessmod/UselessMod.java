@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -55,6 +56,7 @@ public class UselessMod {
 	private static final KeyBinding toggleBeaconAreaKey = new KeyBinding("key.uselessmod.toggle_beacon_area", KeyConflictContext.IN_GAME, Keyboard.KEY_J, Reference.NAME);
 	private static final KeyBinding spyKey = new KeyBinding("key.uselessmod.spy", KeyConflictContext.IN_GAME, Keyboard.KEY_Y, Reference.NAME);
 	private static final Minecraft mc = Minecraft.getMinecraft();
+	private static final StepAssistHelper stepAssistHelper = new StepAssistHelper();
 	private String originalTitle;
 
 	@Mod.EventHandler
@@ -103,6 +105,9 @@ public class UselessMod {
 	@SubscribeEvent
 	public void onTick(TickEvent.ClientTickEvent event) {
 		this.tickCounter++;
+		if(currentServer != null) {
+			System.out.println(currentServer.serverIP);
+		}
 		if (mc.world != null) {
 			if (!this.mc.isIntegratedServerRunning()) {
 				UselessMod.currentServer = this.mc.getCurrentServerData();
@@ -128,6 +133,13 @@ public class UselessMod {
 
 		if (event.phase == TickEvent.Phase.END) {
 			final EntityPlayerSP player = mc.player;
+			if(player != null) {
+				stepAssistHelper.update(player);
+			}
+			if (Configuration.noFall && player.fallDistance > 2F && !player.isElytraFlying()) {
+				player.connection.sendPacket(new CPacketPlayer(true));
+			}
+
 			if (Configuration.flightInertiaCancellation && player != null && player.capabilities.isFlying) {
 				final GameSettings settings = mc.gameSettings;
 				if (!(GameSettings.isKeyDown(settings.keyBindForward) || GameSettings.isKeyDown(settings.keyBindBack) || GameSettings.isKeyDown(settings.keyBindLeft) || GameSettings.isKeyDown(settings.keyBindRight))) {
@@ -142,16 +154,6 @@ public class UselessMod {
 		if (event.getGui() instanceof GuiMultiplayer) {
 			this.updateTitle();
 		}
-	}
-
-	@SubscribeEvent
-	public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
-		if (!(event.getEntityLiving() instanceof EntityPlayerSP)) {
-			return;
-		}
-
-		final EntityPlayerSP player = (EntityPlayerSP) event.getEntityLiving();
-		player.stepHeight = Configuration.stepAssist && !player.isSneaking() ? 1.5F : 0.6F;
 	}
 
 	private void updateTitle() {

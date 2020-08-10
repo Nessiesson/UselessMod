@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("InvalidMemberReference")
 @Mixin(EntityItemFrame.class)
 public abstract class MixinEntityItemFrame {
 	@Inject(method = {"getWidthPixels", "getHeightPixels"}, at = @At("HEAD"), cancellable = true)
