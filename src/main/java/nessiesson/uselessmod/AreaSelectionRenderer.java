@@ -54,6 +54,16 @@ public class AreaSelectionRenderer {
 
 			AxisAlignedBB origin = null;
 			if (p0 != null && p1 != null) {
+				// maybe theres a better way to fix this but my brain isn't working with full neuron capacity due to 25+° at midnight
+				if ((d0 >= 0 && d0 >= (int) d0 + 0.5) || (d0 < 0 && d0 >= (int) d0 - 0.5)) {
+					p0 = p0.add(-1, 0, 0);
+					p1 = p1.add(-1, 0, 0);
+				}
+				if ((d2 >= 0 && d2 >= (int) d2 + 0.5) || (d2 < 0 && d2 >= (int) d2 - 0.5)) {
+
+					p0 = p0.add(0, 0, -1);
+					p1 = p1.add(0, 0, -1);
+				}
 				origin = new AxisAlignedBB(p0, p1);
 				RenderGlobal.drawSelectionBoundingBox(origin.expand(1F, 1F, 1F).offset(-d0, -d1, -d2), 0.9F, 0.9F, 0.9F, 1F);
 			}
