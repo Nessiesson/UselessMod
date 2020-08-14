@@ -26,6 +26,7 @@
 		"MixinGuiDisconnected",
 		"MixinGuiGameOver",
 		"MixinGuiIngame",
+		"MixinGuiIngameMenu",
 		"MixinGuiMultiplayer",
 		"MixinGuiNewChat",
 		"MixinGuiOverlayDebug",

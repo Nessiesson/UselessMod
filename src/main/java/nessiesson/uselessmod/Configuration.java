@@ -11,7 +11,7 @@ public class Configuration {
 	public static boolean alwaysSingleplayerCheats = false;
 	public static boolean clickBlockMining = false;
 	public static boolean clientEntityUpdates = true;
-	public static boolean craftingHax = true;
+	public static boolean craftingHax = false;
 	public static boolean deathLocation = false;
 	public static boolean extendedChat = false;
 	public static boolean fixBlock36Particles = false;
@@ -27,7 +27,7 @@ public class Configuration {
 	public static boolean showCenteredPlants = false;
 	public static boolean showClearLava = false;
 	public static boolean showDeathAnimations = true;
-	public static boolean showExplosion = true;
+	public static boolean showExplosion = false;
 	public static boolean showGuiBackGround = true;
 	public static boolean showHand = true;
 	public static boolean showIdealToolMarker = false;
